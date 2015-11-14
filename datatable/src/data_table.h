@@ -21,16 +21,22 @@ namespace dt
 			}
 
 
-			data_table_iterator(const _RTy &r) :
-				m_rows { r },
-				m_row { r.row(d) }
+			data_table_iterator(const iter_t &r) :
+				m_rows { r.m_rows },
+				m_row { r.m_row }
 			{
 			}
 
 
-			iter_t& operator=(const _RTy &r)
+			~data_table_iterator()
 			{
-				m_row = m_rows.row(r.row_num());
+			}
+
+
+			iter_t& operator=(const iter_t &r)
+			{
+				m_row =  r.m_row;
+				m_rows = r.m_rows;
 				return(*this);
 			}
 

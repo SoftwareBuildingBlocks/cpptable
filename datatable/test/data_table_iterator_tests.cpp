@@ -40,19 +40,21 @@ TEST(data_table_iterator_tests, iterate_10_rows)
 }
 
 
-//TEST(data_table_iterator_tests, iterate_find_if_value_equals_105)
-//{
-//	dt::data_table_columns columns {
-//		dt::data_table_column<std::int32_t>("id"),
-//		dt::data_table_column<std::int64_t>("value"),
-//		dt::data_table_column<std::int64_t>("timestamp")
-//	};
-//
-//	dt::data_table table {columns};
-//
-//	PopulateTable(table, 10);
-//
-//	auto itr = std::find_if(table.begin(), table.end(), [](const dt::data_table::row_type &r) {
-//		return(r.get<std::uint32_t>("value") == 105);
-//	});
-//}
+TEST(data_table_iterator_tests, iterate_find_if_value_equals_500)
+{
+	dt::data_table_columns columns {
+		dt::data_table_column<std::int32_t>("id"),
+		dt::data_table_column<std::int64_t>("value"),
+		dt::data_table_column<std::int64_t>("timestamp")
+	};
+
+	dt::data_table table {columns};
+
+	PopulateTable(table, 10);
+
+	auto itr = std::find_if(table.begin(), table.end(), [](const dt::data_table::row_type &r) {
+		return(r.get<std::uint32_t>("value") == 500);
+	});
+
+	ASSERT_EQ(itr->get<std::uint32_t>("value"), 500);
+}

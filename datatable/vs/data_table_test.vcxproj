@@ -57,6 +57,7 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
+    <Import Project="packages\gtest.1.7.0\build\native\gtest.targets" Condition="Exists('packages\gtest.1.7.0\build\native\gtest.targets')" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -87,6 +88,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -124,6 +126,9 @@
     <None Include="date_table_test.shared.props">
       <SubType>Designer</SubType>
     </None>
+    <None Include="gtest.cpp.user.overrides.props" />
+    <None Include="gtest.cpp.user.props" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\test\data_table_iterator_tests.cpp" />
@@ -132,4 +137,10 @@
     <ClCompile Include="..\test\test_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\gtest.1.7.0\build\native\gtest.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\gtest.1.7.0\build\native\gtest.targets'))" />
+  </Target>
 </Project>

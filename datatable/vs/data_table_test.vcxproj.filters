@@ -16,6 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="date_table_test.shared.props" />
+    <None Include="gtest.cpp.user.props" />
+    <None Include="gtest.cpp.user.overrides.props" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\test\test_main.cpp">

@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <unordered_map>
 #include <cstdint>
 #include "data_table_column.h"
@@ -16,6 +17,49 @@ namespace dt
 				m_column { 0 },
 				m_extent_size { 0 }
 			{
+			}
+
+
+			~column_extent()
+			{
+			}
+
+
+			column_extent(const column_extent &c) :
+				m_extents { c.m_extents },
+				m_rows { c.m_rows },
+				m_type { c.m_type },
+				m_type_size { c.m_type_size },
+				m_column { c.m_column },
+				m_extent_size { c.m_extent_size }
+			{
+			}
+
+			
+			column_extent(column_extent &&c)
+			{
+				if (this == &c)
+					return;
+				m_extents = c.m_extents;
+				m_rows = c.m_rows;
+				m_type = c.m_type;
+				m_type_size = c.m_type_size;
+				m_column = c.m_column;
+				m_extent_size = c.m_extent_size;
+				c.m_extents.clear();
+				m_temp_data = std::move(c.m_temp_data);
+			}
+
+
+			column_extent& operator=(const column_extent &c)
+			{
+				m_extents = c.m_extents;
+				m_rows = c.m_rows;
+				m_type = c.m_type;
+				m_type_size = c.m_type_size;
+				m_column = c.m_column;
+				m_extent_size = c.m_extent_size;
+				return(*this);
 			}
 
 
@@ -43,6 +87,13 @@ namespace dt
 			}
 
 
+			inline void swap(std::uint64_t l, std::uint64_t r)
+			{
+				std::memcpy(get_temp(), get_data_p(l), m_type_size);
+				std::memcpy(get_data_p(l), get_data_p(r), m_type_size);
+				std::memcpy(get_data_p(r), get_temp(), m_type_size);
+			}
+
 		private:
 			inline char* get_data_p(std::uint64_t row)
 			{
@@ -69,12 +120,22 @@ namespace dt
 				// TODO: consider whether to clear the memory allocated
 				// TODO: add an allocator
 				for (std::uint64_t i = 0; i < n; i++)
-					m_extents.push_back(new char[m_extent_size]);
+					m_extents.emplace_back(new char[m_extent_size]);
 			}
-		
+
+
+			inline char* get_temp()
+			{
+				if (m_temp_data == nullptr)
+					m_temp_data = std::unique_ptr<char>(new char[m_type_size]);
+				return(m_temp_data.get());
+			}
 
 		private:
+			// todo: make m_extents an array of unqiue_ptr??
+			// todo: clean-up the char* memory!!!
 			std::vector<char*> m_extents;
+			std::unique_ptr<char> m_temp_data;
 			std::uint64_t m_extent_size;
 			std::uint64_t m_rows;
 			size_t m_column;
@@ -129,6 +190,12 @@ namespace dt
 
 
 			inline std::uint64_t row_count() const { return(m_row_count); }
+
+
+			inline void swap(std::uint64_t src_row, std::uint64_t dest_row)
+			{
+				for (auto &e : m_column_extents) { e.swap(src_row, dest_row); }
+			}
 
 
 		private:

@@ -55,6 +55,11 @@ namespace dt
 			}
 
 
+			inline void swap(data_table_row &r)
+			{
+				m_buffer->swap(m_row, r.m_row);
+			}
+
 		private:
 			row_buffer *m_buffer;
 			std::uint64_t m_row;
@@ -74,8 +79,11 @@ namespace dt
 
 			inline std::uint64_t size() const { return(m_buffer.row_count()); }
 
-			row_type add() { return(row_type(m_buffer.add(), &m_buffer)); }
-			row_type row(std::uint64_t r) { return(row_type(r, &m_buffer)); }
+			inline row_type add() { return(row_type(m_buffer.add(), &m_buffer)); }
+			inline row_type row(std::uint64_t r) { return(row_type(r, &m_buffer)); }
+			inline void swap(std::uint64_t l, std::uint64_t r) { swap(row(l), row(r)); }
+			// todo: enforce that l and r are from the same table by comparing m_buffer
+			inline void swap(row_type &l, row_type &r) { l.swap(r); }
 
 		public:
 			row_buffer m_buffer;

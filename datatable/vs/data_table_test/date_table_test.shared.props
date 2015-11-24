@@ -2,12 +2,12 @@
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <OutDir>$(SolutionDir)..\bin\Windows\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>.tmp\data_table_test\$(IntDir)</IntDir>
+    <IntDir>$(SolutionDir).tmp\data_table_test\$(IntDir)</IntDir>
   </PropertyGroup>
   <PropertyGroup Label="data_table">
-    <data_table-lib-path>..\bin\Windows\$(Platform)\$(Configuration)</data_table-lib-path>
+    <data_table-lib-path>$(SolutionDir)..\bin\Windows\$(Platform)\$(Configuration)</data_table-lib-path>
     <data_table-lib>$(data_table-lib-path)\data_table.lib</data_table-lib>
-    <IncludePath>..\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>

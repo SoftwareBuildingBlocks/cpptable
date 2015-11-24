@@ -2,12 +2,12 @@
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <OutDir>$(SolutionDir)..\bin\Windows\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>.tmp\expr_compiler_test\$(IntDir)</IntDir>
+    <IntDir>$(SolutionDir).tmp\expr_compiler_test\$(IntDir)</IntDir>
   </PropertyGroup>
   <PropertyGroup Label="data_table">
-    <expr_compiler-lib-path>..\bin\Windows\$(Platform)\$(Configuration)</expr_compiler-lib-path>
+    <expr_compiler-lib-path>$(SolutionDir)..\bin\Windows\$(Platform)\$(Configuration)</expr_compiler-lib-path>
     <expr_compiler-lib>$(expr_compiler-lib-path)\expr_compiler.lib</expr_compiler-lib>
-    <IncludePath>..\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>

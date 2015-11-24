@@ -476,12 +476,12 @@ val query_interpreter::greater_than(val& left, val& right, idata_row& dr)
 		if (right.is<double>())
 		{
 			auto rightVal = right.get<double>();
-			retval.set<bool>(leftVal > rightVal);
+			retval.set<bool>(leftVal?1:0 > rightVal);
 		}
 		else if (right.is<int>())
 		{
 			auto rightVal = right.get<int>();
-			retval.set<bool>(leftVal > rightVal);
+			retval.set<bool>(leftVal?1:0 > rightVal);
 		}
 		else if (right.is<bool>())
 		{

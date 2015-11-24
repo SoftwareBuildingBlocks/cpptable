@@ -30,13 +30,15 @@ TEST(data_table_iterator_tests, iterate_10_rows)
 
 	dt::data_table table {columns};
 
-	PopulateTable(table, 10);
+	std::uint32_t target_rows = 10;
+	PopulateTable(table, target_rows);
 
 	std::uint32_t i = 1;
 	for (auto r : table) {
 		std::uint32_t id = r.get<std::uint32_t>("id");
 		ASSERT_EQ(id, i++);
 	}
+	ASSERT_EQ(target_rows, i - 1);
 }
 
 

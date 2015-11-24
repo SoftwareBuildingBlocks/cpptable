@@ -145,6 +145,12 @@ namespace dt
 			}
 
 
+			difference_type operator-(const iter_t &r) const
+			{
+				return(this->m_row.row_num() - r.m_row.row_num());
+			}
+
+
 		private:
 			_RTy &m_rows;
 			typename _RTy::row_type m_row;
@@ -160,15 +166,15 @@ namespace dt
 		public:
 			explicit data_table(const data_table_columns &columns) :
 				m_rows { columns },
-				m_columns { }
+				m_columns { columns }
 			{
-				std::copy(columns.cbegin(), columns.cend(), std::back_inserter(m_columns));
 			}
 
 			inline data_table_columns& columns() { return(m_columns); }
 			inline data_table_row new_row() { return(m_rows.add()); }
 			inline data_table_rows& rows() { return(m_rows); }
 			inline data_table_row row(std::uint64_t r) { return(m_rows.row(r)); }
+			inline void swap(std::uint64_t l, std::uint64_t r) { m_rows.swap(l, r); }
 
 			inline iterator begin()
 			{
@@ -182,12 +188,12 @@ namespace dt
 
 			inline iterator end()
 			{
-				return(iterator(m_rows, m_rows.size() - 1));
+				return(iterator(m_rows, m_rows.size()));
 			}
 
 			//inline const_iterator end() const
 			//{
-			//	return(const_iterator(m_rows, m_rows.size() - 1));
+			//	return(const_iterator(m_rows, m_rows.size()));
 			//}
 
 

@@ -10,7 +10,7 @@ public:
 	~parse_stack();
 	void push(parse_tree_node& node);
 	parse_tree_node& top();
-	void pop(int sz);
+	void pop(std::size_t sz);
 	const std::vector<parse_tree_node>& vector();
 private:
 	//std::stack<parse_tree_node> _stack;

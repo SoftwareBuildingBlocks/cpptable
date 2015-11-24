@@ -1,6 +1,6 @@
-#include "LALR_state_data.h"
+#include "lalr_state_data.h"
 
-std::map<int, production_rule> LALR_state_data::get_rules()
+std::map<int, production_rule> lalr_state_data::get_rules()
 {
 	std::map<int, production_rule> rules;
 	
@@ -266,7 +266,7 @@ std::map<int, production_rule> LALR_state_data::get_rules()
 }
 
 
-std::map<int, parser_state> LALR_state_data::get_states()
+std::map<int, parser_state> lalr_state_data::get_states()
 {
 	std::map<int, parser_state> states;
 

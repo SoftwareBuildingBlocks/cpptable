@@ -2,7 +2,7 @@
 #include "tokenizer_state.h"
 #include <set>
 
-class DFA_state_data
+class dfa_state_data
 {
 public:
 	static std::set<std::string> get_terminal_tokens();

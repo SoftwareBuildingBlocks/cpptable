@@ -1,7 +1,7 @@
 #include "dfa_state_data.h""
 #include "string_util.h"
 
-std::set<std::string> DFA_state_data::get_terminal_tokens()
+std::set<std::string> dfa_state_data::get_terminal_tokens()
 {
 	std::set<std::string> tmp;
 	tmp.insert("-");
@@ -927,7 +927,7 @@ void foo<64>(std::vector<tokenizer_state>& in)
 {
 }
 
-std::vector<tokenizer_state> DFA_state_data::get_states()
+std::vector<tokenizer_state> dfa_state_data::get_states()
 {
 	std::vector<tokenizer_state> tmp;
 	foo<0>(tmp);

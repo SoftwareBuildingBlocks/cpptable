@@ -123,6 +123,6 @@ vector<token> tokenizer::tokenize(istream& input)
 
 void tokenizer::init()
 {
-	_states = DFA_state_data::get_states();
-	_terminal_tokens = DFA_state_data::get_terminal_tokens();
+	_states = dfa_state_data::get_states();
+	_terminal_tokens = dfa_state_data::get_terminal_tokens();
 }

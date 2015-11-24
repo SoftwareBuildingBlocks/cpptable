@@ -3,7 +3,7 @@
 #include <map>
 #include "parser_state.h"
 
-class LALR_state_data
+class lalr_state_data
 {
 public:
 	static std::map<int, production_rule> get_rules();

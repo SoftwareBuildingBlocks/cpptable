@@ -173,7 +173,6 @@
     <ClCompile Include="..\src\query_interpreter.cpp" />
     <ClCompile Include="..\src\lalr_state_data.cpp" />
     <ClCompile Include="..\src\parser_symbol.cpp" />
-    <ClCompile Include="..\src\production_rule.cpp" />
     <ClCompile Include="..\src\parser_action.cpp" />
     <ClCompile Include="..\src\parser_state.cpp" />
     <ClCompile Include="..\src\parser.cpp" />

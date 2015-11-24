@@ -12,6 +12,9 @@
 
 using namespace std;
 
+vector<simple_data_row> get_test_data_rows();
+static vector<simple_data_row> test_data = get_test_data_rows();
+
 int main(int argc, char **argv)
 {
 	::testing::InitGoogleTest(&argc, argv);
@@ -80,7 +83,7 @@ void print_zip_row(simple_data_row& ziprow)
 
 TEST(ZipCodeSearch, pre_compiled_expression)
 {
-	auto zip_table = get_test_data_rows();
+	auto& zip_table = test_data;
 	expr_compiler expr_compiler;
 
 	ASSERT_TRUE(expr_compiler.init());
@@ -100,7 +103,7 @@ TEST(ZipCodeSearch, pre_compiled_expression)
 
 TEST(ZipCodeSearch, non_pre_compiled_expression)
 {
-	auto ziprows = get_test_data_rows();
+	auto& ziprows = test_data;
 
 	expr_compiler ec;
 	ASSERT_TRUE(ec.init());

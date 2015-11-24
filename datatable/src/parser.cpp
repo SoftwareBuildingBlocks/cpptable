@@ -15,8 +15,8 @@ parser::~parser()
 
 void parser::init()
 {
-	this->_rules = LALR_state_data::get_rules();
-	this->_parser_states = LALR_state_data::get_states();
+	this->_rules = lalr_state_data::get_rules();
+	this->_parser_states = lalr_state_data::get_states();
 }
 
 parser_action& parser::get_action(token& tok, int parser_state_idx)

@@ -3,7 +3,7 @@
 
 #include <iomanip>
 #include <iostream>
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include "result.h"
 #include "simple_data_row.h"
 #include "test_data.h"

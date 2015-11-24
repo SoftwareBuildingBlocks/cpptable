@@ -20,7 +20,7 @@ parse_tree_node& parse_stack::top()
 	return _stack.back();
 }
 
-void parse_stack::pop(int num)
+void parse_stack::pop(std::size_t num)
 {
 	auto start = _stack.begin() + (_stack.size() - num);
 	_stack.erase(start, _stack.end());

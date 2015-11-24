@@ -1,4 +1,4 @@
-#include "dfa_state_data.h""
+#include "dfa_state_data.h"
 #include "string_util.h"
 
 std::set<std::string> DFA_state_data::get_terminal_tokens()

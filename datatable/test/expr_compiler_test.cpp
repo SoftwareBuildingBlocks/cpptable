@@ -92,8 +92,6 @@ TEST(BasicCppTest, noskipws_test)
 	char c;
 	auto is_eof = false;
 	is_eof = (input >> c ? false : true);
-
-	cout << c << endl;
 }
 
 TEST(ZipCodeSearch, pre_compiled_expression)

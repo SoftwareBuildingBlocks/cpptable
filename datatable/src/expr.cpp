@@ -10,7 +10,7 @@ bool expr::eval(idata_row& dr)
 	query_interpreter qi;
 	auto retval = qi.interpret(_root, dr);
 	if (!retval.is<bool>())
-		throw std::exception("Expression must return a boolean value");
+		throw std::runtime_error("Expression must return a boolean value");
 
 	return retval.get<bool>();
 }

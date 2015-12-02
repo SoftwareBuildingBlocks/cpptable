@@ -157,13 +157,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(SolutionDir)..\src\simple_data_row.h" />
-    <ClInclude Include="$(SolutionDir)..\src\test_data.h" />
+    <ClInclude Include="$(SolutionDir)..\test\simple_data_row.h" />
+    <ClInclude Include="$(SolutionDir)..\test\test_data.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(SolutionDir)..\src\expr_compiler_test.cpp" />
-    <ClCompile Include="$(SolutionDir)..\src\simple_data_row.cpp" />
-    <ClCompile Include="$(SolutionDir)..\src\test_data.cpp" />
+    <ClCompile Include="$(SolutionDir)..\test\expr_compiler_test.cpp" />
+    <ClCompile Include="$(SolutionDir)..\test\simple_data_row.cpp" />
+    <ClCompile Include="$(SolutionDir)..\test\test_data.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="expr_compiler_test.shared.props" />

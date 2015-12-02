@@ -1,5 +1,6 @@
+#include <ios>
+#include <iomanip>
 #include "tokenizer.h"
-
 #include "tokenizer_state.h"
 #include "string_util.h"
 #include "dfa_state_data.h"
@@ -96,7 +97,7 @@ vector<token> tokenizer::tokenize(istream& input)
 				else if(!is_ws(curr_state))
 				{
 					throw runtime_error(format<128>("Expected this (%d,%s) to be a terminal or whitespace state",
-													current_state_idx, curr_state.accepted_token));
+													current_state_idx, curr_state.accepted_token.c_str()));
 				}
 
 				current_state_idx = _start_state_idx;
@@ -108,7 +109,7 @@ vector<token> tokenizer::tokenize(istream& input)
 				// current state using the current input.  So we are stuck and cannot 
 				// consume any more characters from the stream
 				throw runtime_error(format<128>("Current state (%d,%s) is not an accept state",
-												current_state_idx, curr_state.accepted_token));
+												current_state_idx, curr_state.accepted_token.c_str()));
 			}
 		}
 	}

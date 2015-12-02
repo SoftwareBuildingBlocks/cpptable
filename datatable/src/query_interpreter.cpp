@@ -376,7 +376,7 @@ val query_interpreter::process_string(parse_tree_node& symbol, idata_row& dr)
 val query_interpreter::process_bool(parse_tree_node& symbol, idata_row& dr)
 {
 	auto imageLower(symbol.token.value);
-	transform(imageLower.begin(), imageLower.end(), imageLower.begin(), tolower);
+	std::transform(imageLower.begin(), imageLower.end(), imageLower.begin(), ::tolower);
 
 	auto res = (imageLower == "true" ? true : false);
 	val retval;

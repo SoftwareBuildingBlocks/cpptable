@@ -57,8 +57,6 @@ namespace dt
 
 			inline void swap(data_table_row &r)
 			{
-				if (m_row == r.m_row)
-					return;
 				m_buffer->swap(m_row, r.m_row);
 			}
 

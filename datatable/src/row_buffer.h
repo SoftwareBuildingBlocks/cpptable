@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <cstdint>
 #include "data_table_column.h"
-
+#include <cstring>
 
 namespace dt
 {

@@ -12,7 +12,7 @@ void str_replace(std::string& str,const std::string& search, const std::string& 
 template <int buffsz>
 std::string format(const char* fmt, ...) {
 	auto buffer = std::make_unique<char[]>(buffsz);
-
+		
 	if (buffer == nullptr)
 		throw std::runtime_error("Cannot allocate memory in format");
 

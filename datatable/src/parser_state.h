@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include "parser_action.h"
+#include <string>
 
 class parser_state
 {

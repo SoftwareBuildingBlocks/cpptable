@@ -16,7 +16,7 @@ public:
 	void init();
 	parse_tree_node parse(std::vector<token>& tokens);
 private:
-	int parser::goto_state(parser_action& action);
+	int goto_state(parser_action& action);
 	int shift(parse_stack& stack, token& tok, parser_action& action);
 	int reduce(parse_stack& stack, parser_action& action);
 	parser_action& get_action(token& tok, int parser_state);

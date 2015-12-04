@@ -1,14 +1,15 @@
 // ExprCompilerTest.cpp : Defines the entry point for the console application.
 //
 
+#include <ios>
 #include <iomanip>
 #include <iostream>
 #include <gtest/gtest.h>
-#include "result.h"
+#include "../src/result.h"
 #include "simple_data_row.h"
 #include "test_data.h"
-#include "string_util.h"
-#include "expr_compiler.h"
+#include "../src/string_util.h"
+#include "../src/expr_compiler.h"
 
 using namespace std;
 
@@ -79,6 +80,18 @@ void print_zip_row(simple_data_row& ziprow)
 		ziprow["County"].get<string>().c_str(),
 		ziprow["Latitude"].get<double>(),
 		ziprow["Longitde"].get<double>()) << endl;
+}
+
+TEST(BasicCppTest, noskipws_test)
+{
+	string somestr("and so it goes");
+	const string& str_expr = somestr;
+	stringstream in(str_expr);
+	istream& input = in;
+	input >> std::noskipws;
+	char c;
+	auto is_eof = false;
+	is_eof = (input >> c ? false : true);
 }
 
 TEST(ZipCodeSearch, pre_compiled_expression)

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <data_table/data_table.h>
+#include "../src/data_table.h"
 
 
 static void PopulateTable(dt::data_table &table, std::uint32_t count)

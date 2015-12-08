@@ -3,4 +3,4 @@
 #include <list>
 #include <string>
 
-typedef variant<int, double, bool, std::list<void*>, std::string> val;
+using val = variant<std::int64_t, std::double_t, bool, std::list<void*>, std::string>;

@@ -73,7 +73,7 @@ void print_zip_header()
 void print_zip_row(simple_data_row& ziprow)
 {
 	cout << format<128>("%6d, %20.20s, %10.10s, %3.3s, %10.10s, %0.3f, %0.3f", 
-		ziprow["Zip"].get<int>(),
+		ziprow["Zip"].get<std::int64_t>(),
 		ziprow["Place"].get<string>().c_str(),
 		ziprow["State"].get<string>().c_str(),
 		ziprow["Stateabb"].get<string>().c_str(),

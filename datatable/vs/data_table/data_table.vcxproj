@@ -123,12 +123,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\row_buffer.cpp" />
+    <ClCompile Include="..\..\src\data_table_where.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(SolutionDir)..\src\data_table_column.h" />
     <ClInclude Include="$(SolutionDir)..\src\data_table.h" />
     <ClInclude Include="$(SolutionDir)..\src\data_table_row.h" />
     <ClInclude Include="$(SolutionDir)..\src\row_buffer.h" />
+    <ClInclude Include="$(SolutionDir)..\src\data_table_where_iterator.h" />
+    <ClInclude Include="$(SolutionDir)..\src\expr_datarow_adapter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data_table.targets">

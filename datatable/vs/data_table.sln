@@ -4,9 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "data_table", "data_table\data_table.vcxproj", "{BC65D4ED-1869-4B5C-905A-B88346BE641E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EBFE5381-7FCE-42FD-A8FC-B4C6DFE5E3A9} = {EBFE5381-7FCE-42FD-A8FC-B4C6DFE5E3A9}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "data_table_test", "data_table_test\data_table_test.vcxproj", "{CB476739-36A7-47D5-9DC4-83D77953EDC7}"
 	ProjectSection(ProjectDependencies) = postProject
+		{EBFE5381-7FCE-42FD-A8FC-B4C6DFE5E3A9} = {EBFE5381-7FCE-42FD-A8FC-B4C6DFE5E3A9}
 		{BC65D4ED-1869-4B5C-905A-B88346BE641E} = {BC65D4ED-1869-4B5C-905A-B88346BE641E}
 	EndProjectSection
 EndProject

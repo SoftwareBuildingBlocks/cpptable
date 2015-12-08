@@ -33,8 +33,7 @@ std::set<std::string> dfa_state_data::get_terminal_tokens()
 	return tmp;
 }
 
-typedef tokenizer_state_transition tst;
-
+using tst = tokenizer_state_transition;
 
 template <unsigned int i>
 tokenizer_state get_tok_state()

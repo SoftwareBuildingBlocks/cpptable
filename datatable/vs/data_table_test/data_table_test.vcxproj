@@ -131,10 +131,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(SolutionDir)..\test\data_table_expr_tests.cpp" />
     <ClCompile Include="$(SolutionDir)..\test\data_table_iterator_tests.cpp" />
     <ClCompile Include="$(SolutionDir)..\test\data_table_tests.cpp" />
     <ClCompile Include="$(SolutionDir)..\test\row_buffer_tests.cpp" />
     <ClCompile Include="$(SolutionDir)..\test\test_main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\expr_compiler\expr_compiler.vcxproj">
+      <Project>{ebfe5381-7fce-42fd-a8fc-b4c6dfe5e3a9}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

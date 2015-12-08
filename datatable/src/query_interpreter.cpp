@@ -354,7 +354,7 @@ val query_interpreter::process_integer(parse_tree_node& symbol, idata_row& dr)
 {
 	auto res = stoi(symbol.token.value);
 	val retval;
-	retval.set<int>(res);
+	retval.set<std::int64_t>(res);
 	return retval;
 }
 
@@ -424,9 +424,9 @@ val query_interpreter::greater_than(val& left, val& right, idata_row& dr)
 			auto rightVal = right.get<double>();
 			retval.set<bool>(leftVal > rightVal);
 		}
-		else if (right.is<int>())
+		else if (right.is<std::int64_t>())
 		{
-			auto rightVal = right.get<int>();
+			auto rightVal = right.get<std::int64_t>();
 			retval.set<bool>(leftVal > rightVal);
 		}
 		else if (right.is<bool>())
@@ -443,17 +443,17 @@ val query_interpreter::greater_than(val& left, val& right, idata_row& dr)
 			throw runtime_error("double cannot be compared to this type");
 		}
 	}
-	else if (left.is<int>())
+	else if (left.is<std::int64_t>())
 	{
-		auto leftVal = left.get<int>();
+		auto leftVal = left.get<std::int64_t>();
 		if (right.is<double>())
 		{
 			auto rightVal = right.get<double>();
 			retval.set<bool>(leftVal > rightVal);
 		}
-		else if (right.is<int>())
+		else if (right.is<std::int64_t>())
 		{
-			auto rightVal = right.get<int>();
+			auto rightVal = right.get<std::int64_t>();
 			retval.set<bool>(leftVal > rightVal);
 		}
 		else if (right.is<bool>())
@@ -478,9 +478,9 @@ val query_interpreter::greater_than(val& left, val& right, idata_row& dr)
 			auto rightVal = right.get<double>();
 			retval.set<bool>(leftVal?1:0 > rightVal);
 		}
-		else if (right.is<int>())
+		else if (right.is<std::int64_t>())
 		{
-			auto rightVal = right.get<int>();
+			auto rightVal = right.get<std::int64_t>();
 			retval.set<bool>(leftVal?1:0 > rightVal);
 		}
 		else if (right.is<bool>())
@@ -627,9 +627,9 @@ val query_interpreter::add(val& left, val& right, idata_row& dr)
 			auto rightVal = right.get<double>();
 			retval.set<double>(leftVal + rightVal);
 		}
-		else if (right.is<int>())
+		else if (right.is<std::int64_t>())
 		{
-			auto rightVal = right.get<int>();
+			auto rightVal = right.get<std::int64_t>();
 			retval.set<double>(leftVal + rightVal);
 		}
 		else if (!right.valid())
@@ -641,9 +641,9 @@ val query_interpreter::add(val& left, val& right, idata_row& dr)
 			throw runtime_error("Cannot add non numeric data types");
 		}
 	}
-	else if (left.is<int>())
+	else if (left.is<std::int64_t>())
 	{
-		auto leftVal = left.get<int>();
+		auto leftVal = left.get<std::int64_t>();
 		if (right.is<double>())
 		{
 			auto rightVal = right.get<double>();
@@ -655,8 +655,8 @@ val query_interpreter::add(val& left, val& right, idata_row& dr)
 		}
 		else
 		{
-			auto rightVal = right.get<int>();
-			retval.set<int>(leftVal + rightVal);
+			auto rightVal = right.get<std::int64_t>();
+			retval.set<std::int64_t>(leftVal + rightVal);
 		}
 	}
 	else if (!left.valid())
@@ -673,9 +673,9 @@ val query_interpreter::add(val& left, val& right, idata_row& dr)
 
 val query_interpreter::subtract(val& left, val& right, idata_row& dr)
 {
-	if (right.is<int>())
+	if (right.is<std::int64_t>())
 	{
-		return add(left, val().set<int>(-right.get<int>()), dr);
+		return add(left, val().set<std::int64_t>(-right.get<std::int64_t>()), dr);
 	}
 	else if (right.is<double>())
 	{
@@ -704,13 +704,13 @@ val query_interpreter::multiply(val& right, val& left, idata_row& dr)
 		}
 		else
 		{
-			auto rightVal = right.get<int>();
+			auto rightVal = right.get<std::int64_t>();
 			retval.set<double>(leftVal * rightVal);
 		}
 	}
-	else if (left.is<int>())
+	else if (left.is<std::int64_t>())
 	{
-		auto leftVal = left.get<int>();
+		auto leftVal = left.get<std::int64_t>();
 		if (right.is<double>())
 		{
 			auto rightVal = right.get<double>();
@@ -718,8 +718,8 @@ val query_interpreter::multiply(val& right, val& left, idata_row& dr)
 		}
 		else
 		{
-			auto rightVal = right.get<int>();
-			retval.set<int>(leftVal * rightVal);
+			auto rightVal = right.get<std::int64_t>();
+			retval.set<std::int64_t>(leftVal * rightVal);
 		}
 	}
 	return retval;
@@ -738,13 +738,13 @@ val query_interpreter::divide(val& right, val& left, idata_row& dr)
 		}
 		else
 		{
-			auto rightVal = right.get<int>();
+			auto rightVal = right.get<std::int64_t>();
 			retval.set<double>(leftVal / rightVal);
 		}
 	}
-	else if (left.is<int>())
+	else if (left.is<std::int64_t>())
 	{
-		auto leftVal = left.get<int>();
+		auto leftVal = left.get<std::int64_t>();
 		if (right.is<double>())
 		{
 			auto rightVal = right.get<double>();
@@ -752,8 +752,8 @@ val query_interpreter::divide(val& right, val& left, idata_row& dr)
 		}
 		else
 		{
-			auto rightVal = right.get<int>();
-			retval.set<int>(leftVal / rightVal);
+			auto rightVal = right.get<std::int64_t>();
+			retval.set<std::int64_t>(leftVal / rightVal);
 		}
 	}
 	return retval;
@@ -761,8 +761,8 @@ val query_interpreter::divide(val& right, val& left, idata_row& dr)
 
 val query_interpreter::negate(val& right, idata_row& dr)
 {
-	if (right.is<int>())
-		return val().set<int>(-right.get<int>());
+	if (right.is<std::int64_t>())
+		return val().set<std::int64_t>(-right.get<std::int64_t>());
 	else if (right.is<double>())
 		return val().set<double>(-right.get<double>());
 	else

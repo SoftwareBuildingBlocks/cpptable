@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <data_table/data_table.h>
+#include "../src/data_table.h"
 #include <algorithm>
 
 

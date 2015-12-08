@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <data_table/row_buffer.h>
+#include "../src/row_buffer.h"
 
 
 TEST(row_buffer_tests, enure_the_columns_can_be_found_by_name)

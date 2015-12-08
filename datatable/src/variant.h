@@ -5,6 +5,7 @@
 #include <utility>
 #include <typeinfo>
 #include <type_traits>
+#include <stdexcept>
 
 template <std::size_t arg1, std::size_t ... others>
 struct static_max;
@@ -53,9 +54,9 @@ struct variant_helper<F, Ts...> {
 };
 
 template<> struct variant_helper<> {
-	inline static void destroy(std::size_t id, void * data) { }
-	inline static void move(std::size_t old_t, void * old_v, void * new_v) { }
-	inline static void copy(std::size_t old_t, const void * old_v, void * new_v) { }
+	inline static void destroy(std::size_t id, void * data) { /*throw std::runtime_error("variant does not have this type");*/ }
+	inline static void move(std::size_t old_t, void * old_v, void * new_v) { throw std::runtime_error("variant does not have this type"); }
+	inline static void copy(std::size_t old_t, const void * old_v, void * new_v) { throw std::runtime_error("variant does not have this type"); }
 };
 
 template<typename... Ts>

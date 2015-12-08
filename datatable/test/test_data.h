@@ -3,7 +3,7 @@
 #include <tuple>
 #include <memory>
 
-typedef std::tuple<int, std::string, std::string, std::string, std::string, double, double> Data;
+using Data = std::tuple<int, std::string, std::string, std::string, std::string, double, double>;
 
 class ComplierTest
 {

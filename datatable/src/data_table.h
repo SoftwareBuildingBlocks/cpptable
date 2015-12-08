@@ -3,6 +3,7 @@
 #include <iterator>
 #include "data_table_column.h"
 #include "data_table_row.h"
+#include "data_table_where_iterator.h"
 
 namespace dt 
 {
@@ -162,6 +163,7 @@ namespace dt
 		public:
 			using row_type = data_table_rows::row_type;
 			using iterator = data_table_iterator<data_table_rows>;
+			using where_iterator = data_table_where_iterator<data_table_rows>;
 
 		public:
 			explicit data_table(const data_table_columns &columns) :
@@ -191,14 +193,15 @@ namespace dt
 				return(iterator(m_rows, m_rows.size()));
 			}
 
-			//inline const_iterator end() const
+		//inline const_iterator end() const
 			//{
-			//	return(const_iterator(m_rows, m_rows.size()));
+			//	return(const_iterator(m_rows, m_table.size()));
 			//}
 
-
-		private:
+			where_iterator where(const std::string& where_clause);
+	private:
 			data_table_columns m_columns;
 			data_table_rows m_rows;
 	};
+
 }

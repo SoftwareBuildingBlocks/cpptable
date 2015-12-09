@@ -1,8 +1,8 @@
-#include "parser.h"
-#include "string_util.h"
-#include "parser_symbol.h"
-#include "LALR_state_data.h"
-#include "parse_stack.h"
+#include <data_table/parser.h>
+#include <data_table/string_util.h>
+#include <data_table/parser_symbol.h>
+#include <data_table/LALR_state_data.h>
+#include <data_table/parse_stack.h>
 
 parser::parser() : _parser_start_state_idx(0)
 {

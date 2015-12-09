@@ -1,8 +1,8 @@
 #include <string>
-#include "data_table.h"
-#include "expr.h"
-#include "expr_compiler.h"
-#include "expr_datarow_adapter.h"
+#include <data_table/data_table.h>
+#include <data_table/expr.h>
+#include <data_table/expr_compiler.h>
+#include <data_table/expr_datarow_adapter.h>
 
 namespace dt
 {

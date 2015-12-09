@@ -1,6 +1,4 @@
-#include "token.h"
-
-
+#include <data_table/token.h>
 
 token::token()
 {

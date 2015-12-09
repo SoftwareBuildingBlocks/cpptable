@@ -1,4 +1,4 @@
-#include "tokenizer_state.h"
+#include <data_table/tokenizer_state.h>
 
 tokenizer_state::tokenizer_state():
 	accepted_token(""),

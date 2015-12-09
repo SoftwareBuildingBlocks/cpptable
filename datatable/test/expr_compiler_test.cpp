@@ -5,11 +5,11 @@
 #include <iomanip>
 #include <iostream>
 #include <gtest/gtest.h>
-#include "../src/result.h"
+#include <data_table/result.h>
+#include <data_table/string_util.h>
+#include <data_table/expr_compiler.h>
 #include "simple_data_row.h"
 #include "test_data.h"
-#include "../src/string_util.h"
-#include "../src/expr_compiler.h"
 
 using namespace std;
 

@@ -21,6 +21,11 @@
     <ClInclude Include="$(SolutionDir)..\src\row_buffer.h">
       <Filter>headers</Filter>
     </ClInclude>
+    <ClInclude Include="$(SolutionDir)..\src\data_table_where_iterator.h" />
+    <ClInclude Include="$(SolutionDir)..\src\expr_datarow_adapter.h" />
+    <ClInclude Include="..\..\src\data_table_types.h">
+      <Filter>headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="date_table.shared.props" />
@@ -30,5 +35,6 @@
     <ClCompile Include="..\..\src\row_buffer.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\data_table_where.cpp" />
   </ItemGroup>
 </Project>

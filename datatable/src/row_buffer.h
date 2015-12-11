@@ -75,18 +75,47 @@ namespace dt
 
 			template<typename T> void set(std::uint64_t row, const T &v)
 			{
-				T* pdata = reinterpret_cast<T*>(get_data_p(row));
+				T *pdata = reinterpret_cast<T*>(get_data_p(row));
 				*pdata = v;	
 			}   
 
+			
+			template<> void set(std::uint64_t row, const std::string &v)
+			{
+				char **pdata = reinterpret_cast<char**>(get_data_p(row));
+				*pdata = store_string(v);
+			}
 
-			template<typename T> T& get(std::uint64_t row)
+
+			template<> void set(std::uint64_t row, const std::wstring &v)
+			{
+				wchar_t *pdata = reinterpret_cast<wchar_t*>(get_data_p(row));
+				wchar_t **pentry = &pdata;
+				*pentry = store_string(v);
+			}
+
+
+			template<typename T> T get(std::uint64_t row)
 			{
 				T* pdata = reinterpret_cast<T*>(get_data_p(row));
 				return(*pdata);
 			}
 
+			
+			template<> dt_char_ptr get(std::uint64_t row)
+			{
+				char **pdata = reinterpret_cast<char**>(get_data_p(row));
+				return(*pdata);
+			}
 
+
+			template<> dt_wchar_ptr get(std::uint64_t row)
+			{
+				wchar_t **pdata = reinterpret_cast<wchar_t**>(get_data_p(row));
+				return(*pdata);
+			}
+
+							
 			inline void swap(std::uint64_t l, std::uint64_t r)
 			{
 				std::memcpy(get_temp(), get_data_p(l), m_type_size);
@@ -131,6 +160,22 @@ namespace dt
 				return(m_temp_data.get());
 			}
 
+
+			inline char* store_string(const std::string &v)
+			{
+				char *s = new char[v.size() + 1];
+				std::memcpy(s, v.c_str(), v.size() + 1);
+				return(s);
+			}
+
+
+			inline wchar_t* store_string(const std::wstring &v)
+			{
+				wchar_t *s = new wchar_t[v.size() + 1];
+				std::memcpy(s, v.c_str(), (v.size() + 1) * sizeof(wchar_t));
+				return(s);
+			}
+
 		private:
 			// todo: make m_extents an array of unqiue_ptr??
 			// todo: clean-up the char* memory!!!
@@ -165,7 +210,7 @@ namespace dt
 				extent.set<T>(row, value);
 			}
 
-
+			
 			template<typename T> T get(std::uint64_t row, const std::string &col)
 			{
 				column_extent &extent = m_column_extents[column_index(col)];

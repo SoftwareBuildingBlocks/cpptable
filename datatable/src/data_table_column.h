@@ -1,21 +1,11 @@
 #pragma once
 #include <string>
-#include <cstdint>
 #include <vector>
+#include "data_table_types.h"
 
 
 namespace dt
 {
-	const std::uint32_t tid_int8 = 1;
-	const std::uint32_t tid_uint8 = 2;
-	const std::uint32_t tid_int16 = 3;
-	const std::uint32_t tid_uint16 = 4;
-	const std::uint32_t tid_int32 = 5;
-	const std::uint32_t tid_uint32 = 6;
-	const std::uint32_t tid_int64 = 7;
-	const std::uint32_t tid_uint64 = 8;
-
-
 	class basic_data_column
 	{
 		public:
@@ -166,6 +156,51 @@ namespace dt
 		{
 		}
 	};
+
+
+	template<>
+	class data_table_column<char> : public basic_data_column
+	{
+		public:
+		explicit data_table_column(const std::string &name) :
+			basic_data_column { name, tid_char, sizeof(char) }
+		{
+		}
+	};
+
+
+	template<>
+	class data_table_column<std::string> : public basic_data_column
+	{
+		public:
+		explicit data_table_column(const std::string &name) :
+			basic_data_column { name, tid_char_ptr, sizeof(char*) }
+		{
+		}
+	};
+
+
+	template<>
+	class data_table_column<wchar_t> : public basic_data_column
+	{
+		public:
+		explicit data_table_column(const std::string &name) :
+			basic_data_column { name, tid_wchar, sizeof(wchar_t) }
+		{
+		}
+	};
+
+
+	template<>
+	class data_table_column<std::wstring> : public basic_data_column
+	{
+		public:
+		explicit data_table_column(const std::string &name) :
+			basic_data_column { name, tid_char_ptr, sizeof(wchar_t*) }
+		{
+		}
+	};
+
 
 	using data_table_columns = std::vector<basic_data_column>;
 }

@@ -37,9 +37,33 @@ namespace dt
 			}
 
 
+			template<> void set(const std::string &col, const std::string &value)
+			{
+				m_buffer->set(m_row, col, value);
+			}
+
+
+			template<> void set(const std::string &col, const std::wstring &value)
+			{
+				m_buffer->set(m_row, col, value);
+			}
+
+
 			template<typename T> void set(size_t col, const T& value)
 			{
 				m_buffer->set<T>(m_row, col, value);
+			}
+
+			
+			template<> void set(size_t col, const std::string &value)
+			{
+				m_buffer->set(m_row, col, value);
+			}
+
+
+			template<> void set(size_t col, const std::wstring &value)
+			{
+				m_buffer->set(m_row, col, value);
 			}
 
 

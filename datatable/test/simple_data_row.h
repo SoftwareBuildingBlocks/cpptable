@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
-#include "../src/result.h"
-#include "../src/data_row.h"
+#include <data_table/result.h>
+#include <data_table/data_row.h>
 
 class simple_data_row : public idata_row
 {

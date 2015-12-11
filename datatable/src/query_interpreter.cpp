@@ -1,11 +1,10 @@
-#include "query_interpreter.h"
-
 #include <string>
-#include "string_util.h"
 #include <algorithm>
 #include <regex>
-#include "parser_symbol.h"
-#include "data_row.h"
+#include <data_table/query_interpreter.h>
+#include <data_table/string_util.h>
+#include <data_table/parser_symbol.h>
+#include <data_table/data_row.h>
 
 using namespace std;
 

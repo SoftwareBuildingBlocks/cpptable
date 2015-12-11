@@ -1,5 +1,5 @@
-#include "parse_stack.h"
-#include "parser_symbol.h"
+#include <data_table/parse_stack.h>
+#include <data_table/parser_symbol.h>
 
 parse_stack::parse_stack() 
 {

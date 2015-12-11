@@ -9,21 +9,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(SolutionDir)..\src\data_table.h">
+    <ClInclude Include="$(SolutionDir)..\include\data_table\data_table.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(SolutionDir)..\src\data_table_column.h">
+    <ClInclude Include="$(SolutionDir)..\include\data_table\data_table_column.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(SolutionDir)..\src\data_table_row.h">
+    <ClInclude Include="$(SolutionDir)..\include\data_table\data_table_row.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(SolutionDir)..\src\row_buffer.h">
+    <ClInclude Include="$(SolutionDir)..\include\data_table\data_table_where_iterator.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(SolutionDir)..\src\data_table_where_iterator.h" />
-    <ClInclude Include="$(SolutionDir)..\src\expr_datarow_adapter.h" />
-    <ClInclude Include="..\..\src\data_table_types.h">
+    <ClInclude Include="$(SolutionDir)..\include\data_table\expr_datarow_adapter.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(SolutionDir)..\include\data_table\row_buffer.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\data_table\data_table_types.h">
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,6 +39,8 @@
     <ClCompile Include="..\..\src\row_buffer.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\data_table_where.cpp" />
+    <ClCompile Include="..\..\src\data_table_where.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

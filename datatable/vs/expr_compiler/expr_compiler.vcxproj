@@ -151,25 +151,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="$(SolutionDir)..\src\dfa_state_data.h" />
-    <ClInclude Include="$(SolutionDir)..\src\expr.h" />
-    <ClInclude Include="$(SolutionDir)..\src\expr_compiler.h" />
-    <ClInclude Include="$(SolutionDir)..\src\data_row.h" />
-    <ClInclude Include="$(SolutionDir)..\src\result.h" />
-    <ClInclude Include="$(SolutionDir)..\src\string_util.h" />
-    <ClInclude Include="$(SolutionDir)..\src\variant.h" />
-    <ClInclude Include="$(SolutionDir)..\src\tokenizer.h" />
-    <ClInclude Include="$(SolutionDir)..\src\token.h" />
-    <ClInclude Include="$(SolutionDir)..\src\parser.h" />
-    <ClInclude Include="$(SolutionDir)..\src\parser_state.h" />
-    <ClInclude Include="$(SolutionDir)..\src\parser_action.h" />
-    <ClInclude Include="$(SolutionDir)..\src\parser_symbol.h" />
-    <ClInclude Include="$(SolutionDir)..\src\production_rule.h" />
-    <ClInclude Include="$(SolutionDir)..\src\lalr_state_data.h" />
-    <ClInclude Include="$(SolutionDir)..\src\query_interpreter.h" />
-    <ClInclude Include="$(SolutionDir)..\src\parse_stack.h" />
-    <ClInclude Include="$(SolutionDir)..\src\tokenizer_state.h" />
-    <ClInclude Include="$(SolutionDir)..\src\tokenizer_state_transition.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\dfa_state_data.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\expr.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\expr_compiler.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\data_row.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\result.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\string_util.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\variant.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\tokenizer.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\token.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\parser.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\parser_state.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\parser_action.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\parser_symbol.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\production_rule.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\lalr_state_data.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\query_interpreter.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\parse_stack.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\tokenizer_state.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\tokenizer_state_transition.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(SolutionDir)..\src\parse_stack.cpp" />

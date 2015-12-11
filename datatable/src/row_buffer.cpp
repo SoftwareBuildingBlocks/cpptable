@@ -1,5 +1,5 @@
-#include "row_buffer.h"
 #include <algorithm>
+#include <data_table/row_buffer.h>
 
 
 namespace dt

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/row_buffer.h"
+#include <data_table/row_buffer.h>
 
 /////////////////////////////////////////////////////////////////////
 // TESTS

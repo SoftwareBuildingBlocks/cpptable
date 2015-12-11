@@ -4,4 +4,7 @@
     <IntDir>$(SolutionDir).tmp\expr_compiler\int\$(IntDir)</IntDir>
     <OutDir>$(SolutionDir)..\bin\Windows\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
+  <PropertyGroup Label="data_table">
+    <IncludePath>$(SolutionDir)..\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
 </Project>

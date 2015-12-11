@@ -1,9 +1,9 @@
 #include <ios>
 #include <iomanip>
-#include "tokenizer.h"
-#include "tokenizer_state.h"
-#include "string_util.h"
-#include "dfa_state_data.h"
+#include <data_table/tokenizer.h>
+#include <data_table/tokenizer_state.h>
+#include <data_table/string_util.h>
+#include <data_table/dfa_state_data.h>
 
 using namespace std;
 

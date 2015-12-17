@@ -132,6 +132,7 @@
     <ClInclude Include="$(SolutionDir)..\include\data_table\row_buffer.h" />
     <ClInclude Include="$(SolutionDir)..\include\data_table\data_table_where_iterator.h" />
     <ClInclude Include="$(SolutionDir)..\include\data_table\expr_datarow_adapter.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\data_table_types.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data_table.targets">

@@ -48,13 +48,13 @@ vector<simple_data_row> get_test_data_rows()
 	{
 		simple_data_row row;
 
-		row["Zip"]		= val().set(get<0>(data));
-		row["Place"]	= val().set(get<1>(data));
-		row["State"]	= val().set(get<2>(data));
-		row["Stateabb"] = val().set(get<3>(data));
-		row["County"]	= val().set(get<4>(data));
-		row["Latitude"]	= val().set(get<5>(data));
-		row["Longitde"] = val().set(get<6>(data));
+		row.set("Zip",val().set(get<0>(data)));
+		row.set("Place",val().set(get<1>(data)));
+		row.set("State",val().set(get<2>(data)));
+		row.set("Stateabb",val().set(get<3>(data)));
+		row.set("County",val().set(get<4>(data)));
+		row.set("Latitude",val().set(get<5>(data)));
+		row.set("Longitde",val().set(get<6>(data)));
 		rows.push_back(row);
 	}
 
@@ -73,13 +73,22 @@ void print_zip_header()
 void print_zip_row(simple_data_row& ziprow)
 {
 	cout << format<128>("%6d, %20.20s, %10.10s, %3.3s, %10.10s, %0.3f, %0.3f", 
-		ziprow["Zip"].get<std::int64_t>(),
-		ziprow["Place"].get<string>().c_str(),
-		ziprow["State"].get<string>().c_str(),
-		ziprow["Stateabb"].get<string>().c_str(),
-		ziprow["County"].get<string>().c_str(),
-		ziprow["Latitude"].get<double>(),
-		ziprow["Longitde"].get<double>()) << endl;
+		ziprow.get("Zip").get<std::int64_t>(),
+		ziprow.get("Place").get<string>().c_str(),
+		ziprow.get("State").get<string>().c_str(),
+		ziprow.get("Stateabb").get<string>().c_str(),
+		ziprow.get("County").get<string>().c_str(),
+		ziprow.get("Latitude").get<double>(),
+		ziprow.get("Longitde").get<double>()) << endl;
+}
+
+TEST(ExprCompiler, LikeTest)
+{
+	simple_data_row dr;
+	dr.set("city",val().set<string>("scarsdale"));
+	expr_compiler ec;
+	ASSERT_TRUE(ec.init());
+	ASSERT_TRUE(ec.eval("city LIKE 'scar%'", dr));
 }
 
 TEST(BasicCppTest, noskipws_test)
@@ -137,9 +146,9 @@ TEST(ExprCompiler, SimpleUsage)
 {
 	simple_data_row dr;
 
-	dr["age"]	= val().set(43);
-	dr["zip"]	= val().set(10583);
-	dr["city"]	= val().set<string>("scarsdale");
+	dr.set("age",val().set(43));
+	dr.set("zip",val().set(10583));
+	dr.set("city",val().set<string>("scarsdale"));
 
 	expr_compiler ec;
 	ASSERT_TRUE(ec.init());
@@ -151,10 +160,10 @@ TEST(ExprCompiler, AllUsage)
 {
 	simple_data_row dr;
 	
-	dr["age"]	= val().set(43);
-	dr["zip"]	= val().set(10039);
-	dr["name"]	= val();  // NULL
-	dr["city"]	= val().set<string>("scarsdale");
+	dr.set("age",val().set(43));
+	dr.set("zip",val().set(10039));
+	dr.set("name",val());  // NULL
+	dr.set("city",val().set<string>("scarsdale"));
 
 	expr_compiler ec;
 	ASSERT_TRUE(ec.init());

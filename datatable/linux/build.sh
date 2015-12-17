@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # compile source files
-clang++ -std=c++1y -D GTEST_HAS_TR1_TUPLE=0 -c ../src/*.cpp 
+clang++ -std=c++1y -D GTEST_HAS_TR1_TUPLE=0 -c -I ../include ../src/*.cpp 
 
 # compile expr test source files
 clang++ -std=c++1y -D GTEST_HAS_TR1_TUPLE=0 -c -I ../include ../test/expr_compiler_test.cpp ../test/simple_data_row.cpp ../test/test_data.cpp

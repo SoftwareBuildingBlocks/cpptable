@@ -8,7 +8,8 @@ class simple_data_row : public idata_row
 public:
 	simple_data_row();
 	~simple_data_row();
-	val operator[](const std::string& name) override;
+	val get(const std::string& name) override;
+	void set(const std::string& name,val& v) override;
 private:
 	std::map<std::string,val> _dict;
 };

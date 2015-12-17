@@ -161,7 +161,7 @@ val query_interpreter::process_pred(parse_tree_node&  symbol, idata_row& dr)
 	{
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
-		return LIKE(left, right, dr);
+ 		return LIKE(left, right, dr);
 	}
 	else if (rhs->size() == 1)
 	{
@@ -252,7 +252,7 @@ val query_interpreter::process_negate(parse_tree_node&  symbol, idata_row& dr)
 val query_interpreter::process_id(parse_tree_node& symbol, idata_row& dr)
 {
 	auto idName = symbol.token.value;
-	auto retval = dr[rtrim(ltrim(idName))];
+	auto retval = dr.get(rtrim(ltrim(idName)));
 	return retval;
 }
 
@@ -351,7 +351,7 @@ val query_interpreter::process_expr_list(parse_tree_node&  symbol, idata_row& dr
 
 val query_interpreter::process_integer(parse_tree_node& symbol, idata_row& dr)
 {
-	auto res = stoi(symbol.token.value);
+	std::int64_t res = stoi(symbol.token.value);
 	val retval;
 	retval.set<std::int64_t>(res);
 	return retval;
@@ -412,89 +412,121 @@ val query_interpreter::interpret(parse_tree_node& root, idata_row& dr)
 	return act_on_node(root, dr);
 }
 
+template <typename L>
+val gtfn(L left, val& right)
+{
+	if (right.is<double>())
+	{
+		auto rightVal = right.get<double>();
+		return val().set<bool>(left > rightVal);
+	}
+	else if (right.is<std::int64_t>())
+	{
+		auto rightVal = right.get<std::int64_t>();
+		return val().set<bool>(left > rightVal);
+	}
+	else if (right.is<std::int32_t>())
+	{
+		auto rightVal = right.get<std::int32_t>();
+		return val().set<bool>(left > rightVal);
+	}
+	else if (right.is<std::int16_t>())
+	{
+		auto rightVal = right.get<std::int16_t>();
+		return val().set<bool>(left > rightVal);
+	}
+	else if (right.is<std::int8_t>())
+	{
+		auto rightVal = right.get<std::int8_t>();
+		return val().set<bool>(left > rightVal);
+	}
+	else if (right.is<std::uint64_t>())
+	{
+		auto rightVal = right.get<std::uint64_t>();
+		return val().set<bool>(left > rightVal);
+	}
+	else if (right.is<std::uint32_t>())
+	{
+		auto rightVal = right.get<std::uint32_t>();
+		return val().set<bool>(left > rightVal);
+	}
+	else if (right.is<std::uint16_t>())
+	{
+		auto rightVal = right.get<std::uint16_t>();
+		return val().set<bool>(left > rightVal);
+	}
+	else if (right.is<std::uint8_t>())
+	{
+		auto rightVal = right.get<std::uint8_t>();
+		return val().set<bool>(left > rightVal);
+	}
+	else if (right.is<bool>())
+	{
+		auto rightVal = right.get<bool>();
+		return val().set<bool>(left > static_cast<int>(rightVal));
+	}
+	else if (!right.valid())
+	{
+		throw runtime_error("type cannot be compared Null.  Missing data or misspelled variable?");
+	}
+	else
+	{
+		throw runtime_error("types cannot be compared");
+	}
+}
+
 val query_interpreter::greater_than(val& left, val& right, idata_row& dr)
 {
 	val retval;
 	if (left.is<double>())
 	{
 		auto leftVal = left.get<double>();
-		if (right.is<double>())
-		{
-			auto rightVal = right.get<double>();
-			retval.set<bool>(leftVal > rightVal);
-		}
-		else if (right.is<std::int64_t>())
-		{
-			auto rightVal = right.get<std::int64_t>();
-			retval.set<bool>(leftVal > rightVal);
-		}
-		else if (right.is<bool>())
-		{
-			auto rightVal = right.get<bool>();
-			retval.set<bool>(leftVal > static_cast<int>(rightVal));
-		}
-		else if (!right.valid())
-		{
-			throw runtime_error("double cannot be compared Null.  Missing data or misspelled variable?");
-		}
-		else
-		{
-			throw runtime_error("double cannot be compared to this type");
-		}
+		retval = gtfn(leftVal, right);
 	}
 	else if (left.is<std::int64_t>())
 	{
 		auto leftVal = left.get<std::int64_t>();
-		if (right.is<double>())
-		{
-			auto rightVal = right.get<double>();
-			retval.set<bool>(leftVal > rightVal);
-		}
-		else if (right.is<std::int64_t>())
-		{
-			auto rightVal = right.get<std::int64_t>();
-			retval.set<bool>(leftVal > rightVal);
-		}
-		else if (right.is<bool>())
-		{
-			auto rightVal = right.get<bool>();
-			retval.set<bool>(leftVal > static_cast<int>(rightVal));
-		}
-		else if (!right.valid())
-		{
-			throw runtime_error("int cannot be compared Null.  Missing data or misspelled variable?");
-		}
-		else
-		{
-			throw runtime_error("int cannot be compared to this type");
-		}
+		retval = gtfn(leftVal, right);
+	}
+	else if (left.is<std::uint64_t>())
+	{
+		auto leftVal = left.get<std::uint64_t>();
+		retval = gtfn(leftVal, right);
+	}
+	else if (left.is<std::int32_t>())
+	{
+		auto leftVal = left.get<std::int32_t>();
+		retval = gtfn(leftVal, right);
+	}
+	else if (left.is<std::uint32_t>())
+	{
+		auto leftVal = left.get<std::uint32_t>();
+		retval = gtfn(leftVal, right);
+	}
+	else if (left.is<std::int16_t>())
+	{
+		auto leftVal = left.get<std::int16_t>();
+		retval = gtfn(leftVal, right);
+	}
+	else if (left.is<std::uint16_t>())
+	{
+		auto leftVal = left.get<std::uint16_t>();
+		retval = gtfn(leftVal, right);
+	}
+	else if (left.is<std::int8_t>())
+	{
+		auto leftVal = left.get<std::int8_t>();
+		retval = gtfn(leftVal, right);
+	}
+	else if (left.is<std::uint8_t>())
+	{
+		auto leftVal = left.get<std::uint8_t>();
+		retval = gtfn(leftVal, right);
 	}
 	else if (left.is<bool>())
 	{
 		auto leftVal = left.get<bool>();
-		if (right.is<double>())
-		{
-			auto rightVal = right.get<double>();
-			retval.set<bool>(leftVal?1:0 > rightVal);
-		}
-		else if (right.is<std::int64_t>())
-		{
-			auto rightVal = right.get<std::int64_t>();
-			retval.set<bool>(leftVal?1:0 > rightVal);
-		}
-		else if (right.is<bool>())
-		{
-			auto rightVal = right.get<bool>();
-			retval.set<bool>(leftVal > rightVal);
-		}
-		else if (!right.valid())
-		{
-			throw runtime_error("bool cannot be compared Null.  Missing data or misspelled variable?");
-		}
-		else
-		{
-			throw runtime_error("bool cannot be compared to this type");
-		}
+		retval = gtfn(leftVal?1:0, right);
 	}
 	else if (left.is<string>())
 	{
@@ -516,7 +548,7 @@ val query_interpreter::greater_than(val& left, val& right, idata_row& dr)
 	}
 	else if (!left.valid())
 	{
-		throw runtime_error("Null cannot be compared in this manner.  Missing data or misspelled variable?");
+		retval.set<bool>(false);
 	}
 	else
 	{

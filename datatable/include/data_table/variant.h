@@ -55,8 +55,8 @@ struct variant_helper<F, Ts...> {
 
 template<> struct variant_helper<> {
 	inline static void destroy(std::size_t id, void * data) { /*throw std::runtime_error("variant does not have this type");*/ }
-	inline static void move(std::size_t old_t, void * old_v, void * new_v) { throw std::runtime_error("variant does not have this type"); }
-	inline static void copy(std::size_t old_t, const void * old_v, void * new_v) { throw std::runtime_error("variant does not have this type"); }
+	inline static void move(std::size_t old_t, void * old_v, void * new_v) { /*throw std::runtime_error("variant does not have this type");*/ }
+	inline static void copy(std::size_t old_t, const void * old_v, void * new_v) { /*throw std::runtime_error("variant does not have this type");*/ }
 };
 
 template<typename... Ts>
@@ -76,7 +76,7 @@ private:
 	std::size_t type_id;
 	data_t data;
 public:
-	variant() : type_id(invalid_type()) {   }
+	variant() : type_id(invalid_type()) { }
 
 	variant(const variant<Ts...>& old) : type_id(old.type_id)
 	{
@@ -89,7 +89,7 @@ public:
 	}
 
 	// Serves as both the move and the copy asignment operator.
-	variant<Ts...>& operator= (variant<Ts...> old)
+	variant<Ts...>& operator= (variant<Ts...>& old)
 	{
 		std::swap(type_id, old.type_id);
 		std::swap(data, old.data);

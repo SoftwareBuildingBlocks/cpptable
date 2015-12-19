@@ -31,18 +31,42 @@ TEST(data_table_expr_tests, simple)
 	ASSERT_EQ(num_rows_found, 1);
 }
 
+TEST(data_table_expr_tests, string_test)
+{
+	auto table = populate_test_data();
+
+	// expression to search for
+	string expr = "name = 'john'";
+
+	auto num_rows_found = 0;
+	// get rows that match expression
+	for (auto r : table.where(expr))
+	{
+		num_rows_found++;
+
+		string name = r.get<dt_char_ptr>("name");
+		ASSERT_EQ(name, "john");
+	}
+
+	ASSERT_EQ(num_rows_found, 1);
+}
+
 dt::data_table populate_test_data()
 {
 	// reduce verbosity
 	using columns = data_table_columns;
 	using int_col = data_table_column<int32_t>;
 	using long_col = data_table_column<int64_t>;
+	using string_col = data_table_column<string>;
+	using char_col = data_table_column<char>;
 
 	// define columns for data table
 	columns cols{
 		int_col("age"),
 		long_col("income"),
-		long_col("soc")
+		long_col("soc"),
+		string_col("name"),
+		char_col("initial")
 	};
 
 	// define table
@@ -54,18 +78,24 @@ dt::data_table populate_test_data()
 		row.set("age", 43);
 		row.set("income", 1000000LL);
 		row.set("soc", 123456789LL);
+		row.set<string>("name", "john");
+		row.set<char>("initial", 'A');
 	}
 	{
 		auto row = table.new_row();
 		row.set("age", 44);
 		row.set("income", 2000000LL);
 		row.set("soc", 321456789LL);
+		row.set<string>("name", "james");
+		row.set<char>("initial", 'B');
 	}
 	{
 		auto row = table.new_row();
 		row.set("age", 45);
 		row.set("income", 3000000LL);
 		row.set("soc", 432156789LL);
+		row.set<string>("name", "rajan");
+		row.set<char>("initial", 'C');
 	}
 
 	return table;

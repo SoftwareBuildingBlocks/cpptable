@@ -74,6 +74,12 @@ inline val expr_datarow_adapter::get(const std::string& name)
 			return val().set<std::int64_t>(v);
 		}
 
+		case dt::tid_char_ptr:
+		{
+			auto v = _dtrow.get<dt::dt_char_ptr>(name);
+			return val().set<std::string>(std::string(v));
+		}
+
 		default:
 			return val();
 	}

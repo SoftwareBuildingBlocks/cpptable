@@ -368,7 +368,9 @@ val query_interpreter::process_double(parse_tree_node& symbol, idata_row& dr)
 val query_interpreter::process_string(parse_tree_node& symbol, idata_row& dr)
 {
 	val retval;
-	retval.set<string>(symbol.token.value);
+	auto strVal = symbol.token.value.substr(1, symbol.token.value.length() - 2);
+
+	retval.set<string>(strVal);
 	return retval;
 }
 
@@ -534,7 +536,6 @@ val query_interpreter::greater_than(val& left, val& right, idata_row& dr)
 		if (right.is<string>())
 		{
 			auto rightVal = right.get<string>();
-			rightVal = rightVal.substr(1, rightVal.length() - 2);
 			retval.set<bool>(leftVal > rightVal);
 		}
 		else if (!right.valid())

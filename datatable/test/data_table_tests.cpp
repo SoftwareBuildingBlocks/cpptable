@@ -109,12 +109,21 @@ TEST(data_table_tests, add_2000_rows)
 		row.set("timestamp", timestamp);
 
 		ASSERT_EQ(row.get<std::uint32_t>(0), id);
+		// vc++ the compiler considers 0 ambigious (nullptr pointer or 0 value ??) when passed to is_null as is_null(0)
+		// pass col and the resolution works (not even static_cast<std::size_t>(0) works
+		std::size_t col = 0;
+		ASSERT_FALSE(row.is_null(col)) << "at row " << i;
 		ASSERT_EQ(row.get<std::uint64_t>(1), value);
+		ASSERT_FALSE(row.is_null(1)) << "at row " << i;
 		ASSERT_EQ(row.get<std::uint64_t>(2), timestamp);
+		ASSERT_FALSE(row.is_null(2)) << "at row " << i;
 
 		ASSERT_EQ(row.get<std::uint32_t>("id"), id);
+		ASSERT_FALSE(row.is_null("id")) << "at row " << i;
 		ASSERT_EQ(row.get<std::uint64_t>("value"), value);
+		ASSERT_FALSE(row.is_null("value")) << "at row " << i;
 		ASSERT_EQ(row.get<std::uint64_t>("timestamp"), timestamp);
+		ASSERT_FALSE(row.is_null("timestamp")) << "at row " << i;
 	}
 
 	auto rows = table.rows();

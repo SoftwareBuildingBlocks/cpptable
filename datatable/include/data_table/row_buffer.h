@@ -15,7 +15,9 @@ namespace dt
 				m_type { 0 },
 				m_type_size { 0 },
 				m_column { 0 },
-				m_extent_size { 0 }
+				m_extent_size { 0 },
+				m_data_size { 0 },
+				m_null_map_size { 0 }
 			{
 			}
 
@@ -31,7 +33,9 @@ namespace dt
 				m_type { c.m_type },
 				m_type_size { c.m_type_size },
 				m_column { c.m_column },
-				m_extent_size { c.m_extent_size }
+				m_data_size { c.m_data_size },
+				m_extent_size { c.m_extent_size },
+				m_null_map_size { c.m_null_map_size }
 			{
 			}
 
@@ -45,7 +49,9 @@ namespace dt
 				m_type = c.m_type;
 				m_type_size = c.m_type_size;
 				m_column = c.m_column;
+				m_data_size = c.m_data_size;
 				m_extent_size = c.m_extent_size;
+				m_null_map_size = c.m_null_map_size;
 				c.m_extents.clear();
 				m_temp_data = std::move(c.m_temp_data);
 			}
@@ -58,18 +64,23 @@ namespace dt
 				m_type = c.m_type;
 				m_type_size = c.m_type_size;
 				m_column = c.m_column;
+				m_data_size = c.m_data_size;
 				m_extent_size = c.m_extent_size;
+				m_null_map_size = c.m_null_map_size;
 				return(*this);
 			}
 
 
-			void initialize(size_t col, std::uint32_t type, std::uint64_t typesize, std::uint64_t rows)
+			void initialize(std::size_t col, std::uint32_t type, std::uint64_t typesize, std::uint64_t rows)
 			{
 				m_rows = rows;
 				m_type = type;
 				m_type_size = typesize;
 				m_column = col;
-				m_extent_size = rows * typesize;
+				std::size_t null_words = (rows / c_nullset_word_bits) + (rows % c_nullset_word_bits ? 1 : 0);
+				m_null_map_size = static_cast<std::uint32_t>(null_words * sizeof(null_word_t));
+				m_data_size = (rows * typesize);
+				m_extent_size = m_data_size + m_null_map_size;
 			}
 
 
@@ -77,6 +88,7 @@ namespace dt
 			{
 				T *pdata = reinterpret_cast<T*>(get_data_p(row));
 				*pdata = v;	
+				set_null_flag(row, false);
 			}   
 
 			
@@ -84,14 +96,39 @@ namespace dt
 			{
 				char **pdata = reinterpret_cast<char**>(get_data_p(row));
 				*pdata = store_string(v);
+				set_null_flag(row, false);
 			}
 
 
 			template<> void set(std::uint64_t row, const std::wstring &v)
 			{
-				wchar_t *pdata = reinterpret_cast<wchar_t*>(get_data_p(row));
-				wchar_t **pentry = &pdata;
-				*pentry = store_string(v);
+				wchar_t **pdata = reinterpret_cast<wchar_t**>(get_data_p(row));
+				*pdata = store_string(v);
+				set_null_flag(row, false);
+			}
+
+			
+			template<typename T> void clear(std::uint64_t row)
+			{
+				set_null_flag(row, true);
+			}
+
+
+			template<> void clear<dt::dt_char_ptr>(std::uint64_t row)
+			{
+				char **pdata = reinterpret_cast<char**>(get_data_p(row));
+				delete [](*pdata);
+				*pdata = nullptr;
+				set_null_flag(row, true);
+			}
+
+
+			template<> void clear<dt::dt_wchar_ptr>(std::uint64_t row)
+			{
+				wchar_t **pdata = reinterpret_cast<wchar_t**>(get_data_p(row));
+				delete [](*pdata);
+				*pdata = nullptr;
+				set_null_flag(row, true);
 			}
 
 
@@ -115,6 +152,15 @@ namespace dt
 				return(*pdata);
 			}
 
+			inline bool is_null(std::uint64_t row)
+			{
+				char *pnullset = get_null_set(row);
+				std::uint64_t row_bit = row % m_rows;
+				std::uint64_t bit = row_bit % c_nullset_word_bits;
+				std::uint64_t byte_location = (row_bit < c_nullset_word_bits) ? 0 : (row_bit / c_nullset_word_bits);
+				return((pnullset[byte_location] & (0x1 << bit)) ? true : false);
+			}
+
 							
 			inline void swap(std::uint64_t l, std::uint64_t r)
 			{
@@ -127,8 +173,8 @@ namespace dt
 			inline char* get_data_p(std::uint64_t row)
 			{
 				std::uint64_t location = row * m_type_size;
-				std::uint64_t offset = location % m_extent_size;
-				std::uint64_t extentNo = location / m_extent_size;
+				std::uint64_t offset = m_null_map_size + (location % m_data_size);
+				std::uint64_t extentNo = location / m_data_size;
 				char *pdata = get_extent(extentNo) + offset;
 				return(pdata);
 			}
@@ -146,10 +192,33 @@ namespace dt
 
 			inline void add_extents(std::uint64_t n)
 			{
-				// TODO: consider whether to clear the memory allocated
 				// TODO: add an allocator
-				for (std::uint64_t i = 0; i < n; i++)
-					m_extents.emplace_back(new char[m_extent_size]);
+				for (std::uint64_t i = 0; i < n; i++) {
+					char *pdata = new char[m_extent_size];
+					std::memset(pdata, 0xff, m_null_map_size);
+					m_extents.emplace_back(pdata);
+				}
+			}
+
+
+			inline char* get_null_set(std::uint64_t row)
+			{
+				std::uint64_t location = row * m_type_size;
+				std::uint64_t extentNo = location / m_data_size;
+				return(get_extent(extentNo));
+			}
+
+
+			inline void set_null_flag(std::uint64_t row, bool setnull)
+			{
+				char *pnullset = get_null_set(row);
+				std::uint64_t row_bit = row % m_rows;
+				std::uint64_t bit = row_bit % c_nullset_word_bits;
+				std::uint64_t byte_location = (row_bit < c_nullset_word_bits) ? 0 : (row_bit / c_nullset_word_bits);
+				if (setnull)
+					pnullset[byte_location] |= (0x1 << bit);
+				else
+					pnullset[byte_location] &= ~(0x1 << bit);
 			}
 
 
@@ -181,11 +250,16 @@ namespace dt
 			// todo: clean-up the char* memory!!!
 			std::vector<char*> m_extents;
 			std::unique_ptr<char> m_temp_data;
+			std::uint64_t m_data_size;
 			std::uint64_t m_extent_size;
 			std::uint64_t m_rows;
-			size_t m_column;
+			std::size_t m_column;
 			std::uint32_t m_type;
 			std::uint64_t m_type_size;
+			std::uint32_t m_null_map_size;
+
+			using null_word_t = std::uint64_t;
+			static const std::size_t c_nullset_word_bits = sizeof(null_word_t) * 8;
 	};
 
 
@@ -204,13 +278,26 @@ namespace dt
 			}
 
 
-			template<typename T> void set(std::uint64_t row, size_t col, const T& value)
+			template<typename T> void set(std::uint64_t row, std::size_t col, const T& value)
 			{
 				column_extent &extent = m_column_extents[col];
 				extent.set<T>(row, value);
 			}
 
-			
+
+			template<typename T> void clear(std::uint64_t row, const std::string &col)
+			{
+				return(clear<T>(row, column_index(col)));
+			}
+
+
+			template<typename T> void clear(std::uint64_t row, std::size_t col)
+			{
+				column_extent &extent = m_column_extents[col];
+				extent.clear<T>(row);
+			}
+
+
 			template<typename T> T get(std::uint64_t row, const std::string &col)
 			{
 				column_extent &extent = m_column_extents[column_index(col)];
@@ -218,14 +305,28 @@ namespace dt
 			}
 
 
-			template<typename T> T get(std::uint64_t row, size_t col)
+			template<typename T> T get(std::uint64_t row, std::size_t col)
 			{
 				column_extent &extent = m_column_extents[col];
 				return(extent.get<T>(row));
 			}
 
 
-			inline size_t column_index(const std::string &col) const
+			inline bool is_null(std::uint64_t row, std::size_t col)
+			{
+				column_extent &extent = m_column_extents[col];
+				return(extent.is_null(row));
+			}
+
+			
+			inline bool is_null(std::uint64_t row, const std::string &col)
+			{
+				column_extent &extent = m_column_extents[column_index(col)];
+				return(extent.is_null(row));
+			}
+
+
+			inline std::size_t column_index(const std::string &col) const
 			{
 				auto itr = m_name_to_ordinal.find(col);
 				if (itr == m_name_to_ordinal.end())
@@ -245,7 +346,7 @@ namespace dt
 
 		private:
 			std::vector<column_extent> m_column_extents;
-			std::unordered_map<std::string, size_t> m_name_to_ordinal;
+			std::unordered_map<std::string, std::size_t> m_name_to_ordinal;
 			std::uint64_t m_rows_per_extent;
 			std::uint64_t m_row_count;
 	};

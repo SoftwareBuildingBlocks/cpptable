@@ -79,6 +79,54 @@ namespace dt
 			}
 
 
+			inline bool is_null(std::size_t col) const
+			{
+				return(m_buffer->is_null(m_row, col));
+			}
+
+
+			inline bool is_null(const std::string &col)
+			{
+				return(m_buffer->is_null(m_row, col));
+			}
+
+			
+			template<typename T> void clear(const std::string &col)
+			{
+				m_buffer->clear<T>(m_row, col);
+			}
+
+
+			template<> void clear<dt_char_ptr>(const std::string &col)
+			{
+				m_buffer->clear<dt_char_ptr>(m_row, col);
+			}
+
+
+			template<> void clear<dt_wchar_ptr>(const std::string &col)
+			{
+				m_buffer->clear<dt_wchar_ptr>(m_row, col);
+			}
+
+
+			template<typename T> void clear(size_t col)
+			{
+				m_buffer->clear<T>(m_row, col);
+			}
+
+
+			template<> void clear<dt_char_ptr>(size_t col)
+			{
+				m_buffer->clear<dt_char_ptr>(m_row, col);
+			}
+
+
+			template<> void clear<dt_wchar_ptr>(size_t col)
+			{
+				m_buffer->clear<dt_wchar_ptr>(m_row, col);
+			}
+
+
 			inline void swap(data_table_row &r)
 			{
 				if (m_row == r.m_row)

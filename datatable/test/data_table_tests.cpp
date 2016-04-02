@@ -83,6 +83,27 @@ void verify_sort_ascending(dt::data_table &table, const std::string &col)
 /////////////////////////////////////////////////////////////////////
 // TESTS
 
+TEST(data_table_tests, set_value_set_to_null_and_set_value)
+{
+	dt::data_table table {
+		dt::data_table_columns {
+		dt::data_table_column<std::uint32_t>("id"),
+		dt::data_table_column<std::uint64_t>("value"),
+		dt::data_table_column<std::uint64_t>("timestamp")
+	}
+	};
+
+	int rows = 75;
+	populate_table(table, 75);
+
+	for (std::uint32_t i = 0; i < rows; i++) {
+		ASSERT_FALSE(table.row(i).is_null(1));
+		table.row(i).clear<std::uint64_t>(1);
+		ASSERT_TRUE(table.row(i).is_null(1));
+	}
+}
+
+
 TEST(data_table_tests, add_2000_rows)
 {
 	dt::data_table_columns columns {

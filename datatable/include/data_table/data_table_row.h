@@ -28,6 +28,14 @@ namespace dt
 			}
 
 
+			data_table_row& operator=(const data_table_row &r)
+			{
+				m_row = r.m_row;
+				m_buffer = r.m_buffer;
+				return(*this);
+			}
+
+
 			inline std::uint64_t row_num() const { return(m_row); }
 
 
@@ -151,12 +159,17 @@ namespace dt
 			{
 			}
 
+			data_table_rows(const data_table_rows &c) :
+				m_buffer { c.m_buffer }
+			{
+			}
+
 			inline std::uint64_t size() const { return(m_buffer.row_count()); }
 
 			inline row_type add() { return(row_type(m_buffer.add(), &m_buffer)); }
 			inline row_type row(std::uint64_t r) { return(row_type(r, &m_buffer)); }
 			inline void swap(std::uint64_t l, std::uint64_t r) { swap(row(l), row(r)); }
-			// todo: enforce that l and r are from the same table by comparing m_buffer
+			// todo: enforce that l and r are from the same table
 			inline void swap(row_type &l, row_type &r) { l.swap(r); }
 
 		public:

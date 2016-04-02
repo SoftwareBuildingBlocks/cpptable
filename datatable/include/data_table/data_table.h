@@ -172,6 +172,12 @@ namespace dt
 			{
 			}
 
+			data_table(const data_table &t) :
+				m_rows { t.m_rows },
+				m_columns { t.m_columns }
+			{
+			}
+
 			inline data_table_columns& columns() { return(m_columns); }
 			inline data_table_row new_row() { return(m_rows.add()); }
 			inline data_table_rows& rows() { return(m_rows); }
@@ -199,6 +205,7 @@ namespace dt
 			//}
 
 			where_iterator where(const std::string& where_clause);
+
 		private:
 			data_table_columns m_columns;
 			data_table_rows m_rows;

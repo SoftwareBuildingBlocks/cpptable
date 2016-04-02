@@ -22,21 +22,21 @@ namespace dt
 			}
 
 
-			~column_extent()
+			column_extent(std::size_t col, std::uint32_t type, std::uint64_t typesize, std::uint64_t rows)
 			{
+				initialize(col, type, typesize, rows);
 			}
 
 
-			column_extent(const column_extent &c) :
-				m_extents { c.m_extents },
-				m_rows { c.m_rows },
-				m_type { c.m_type },
-				m_type_size { c.m_type_size },
-				m_column { c.m_column },
-				m_data_size { c.m_data_size },
-				m_extent_size { c.m_extent_size },
-				m_null_map_size { c.m_null_map_size }
+			~column_extent()
 			{
+				delete_strings();
+			}
+
+			
+			column_extent(const column_extent &c)
+			{
+				*this = c;
 			}
 
 			
@@ -44,7 +44,7 @@ namespace dt
 			{
 				if (this == &c)
 					return;
-				m_extents = c.m_extents;
+				m_extents.swap(c.m_extents);
 				m_rows = c.m_rows;
 				m_type = c.m_type;
 				m_type_size = c.m_type_size;
@@ -59,7 +59,23 @@ namespace dt
 
 			column_extent& operator=(const column_extent &c)
 			{
-				m_extents = c.m_extents;
+				m_rows = c.m_rows;
+				m_type = c.m_type;
+				m_type_size = c.m_type_size;
+				m_column = c.m_column;
+				m_data_size = c.m_data_size;
+				m_extent_size = c.m_extent_size;
+				m_null_map_size = c.m_null_map_size;
+				copy_buffer(c);
+				return(*this);
+			}
+
+
+			column_extent& operator=(column_extent &&c)
+			{
+				if (this == &c)
+					return(*this);
+				m_extents.swap(c.m_extents);
 				m_rows = c.m_rows;
 				m_type = c.m_type;
 				m_type_size = c.m_type_size;
@@ -132,33 +148,34 @@ namespace dt
 			}
 
 
-			template<typename T> T get(std::uint64_t row)
+			template<typename T> T get(std::uint64_t row) const
 			{
 				T* pdata = reinterpret_cast<T*>(get_data_p(row));
 				return(*pdata);
 			}
 
 			
-			template<> dt_char_ptr get(std::uint64_t row)
+			template<> dt_char_ptr get(std::uint64_t row) const
 			{
 				char **pdata = reinterpret_cast<char**>(get_data_p(row));
 				return(*pdata);
 			}
 
 
-			template<> dt_wchar_ptr get(std::uint64_t row)
+			template<> dt_wchar_ptr get(std::uint64_t row) const
 			{
 				wchar_t **pdata = reinterpret_cast<wchar_t**>(get_data_p(row));
 				return(*pdata);
 			}
 
-			inline bool is_null(std::uint64_t row)
+			inline bool is_null(std::uint64_t row) const
 			{
-				char *pnullset = get_null_set(row);
-				std::uint64_t row_bit = row % m_rows;
-				std::uint64_t bit = row_bit % c_nullset_word_bits;
-				std::uint64_t byte_location = (row_bit < c_nullset_word_bits) ? 0 : (row_bit / c_nullset_word_bits);
-				return((pnullset[byte_location] & (0x1 << bit)) ? true : false);
+				null_word_t *pnullset = reinterpret_cast<null_word_t*>(get_null_set(row).get());
+				std::uint64_t row_in_extent = row % m_rows;
+				std::uint64_t null_word = row_in_extent / c_nullset_word_bits;
+				std::uint64_t bit_in_word = row_in_extent % c_nullset_word_bits;
+				std::uint64_t bit_mask = 1ull << bit_in_word;
+				return((pnullset[null_word] & bit_mask) ? true : false);
 			}
 
 							
@@ -170,17 +187,17 @@ namespace dt
 			}
 
 		private:
-			inline char* get_data_p(std::uint64_t row)
+			inline char* get_data_p(std::uint64_t row) const
 			{
 				std::uint64_t location = row * m_type_size;
 				std::uint64_t offset = m_null_map_size + (location % m_data_size);
 				std::uint64_t extentNo = location / m_data_size;
-				char *pdata = get_extent(extentNo) + offset;
+				char *pdata = get_extent(extentNo).get() + offset;
 				return(pdata);
 			}
 
 
-			inline char* get_extent(std::uint64_t extentNo)
+			inline const std::unique_ptr<char>& get_extent(std::uint64_t extentNo) const
 			{
 				// TODO: maybe use a linked list type structure for extents
 				//		 so the extents and rows can be sparse
@@ -190,18 +207,18 @@ namespace dt
 			}
 
 
-			inline void add_extents(std::uint64_t n)
+			inline void add_extents(std::uint64_t n) const
 			{
 				// TODO: add an allocator
 				for (std::uint64_t i = 0; i < n; i++) {
-					char *pdata = new char[m_extent_size];
-					std::memset(pdata, 0xff, m_null_map_size);
-					m_extents.emplace_back(pdata);
+					std::unique_ptr<char> pdata { new char[m_extent_size] };
+					std::memset(pdata.get(), 0xff, m_null_map_size);
+					m_extents.emplace_back(std::move(pdata));
 				}
 			}
 
 
-			inline char* get_null_set(std::uint64_t row)
+			inline const std::unique_ptr<char>& get_null_set(std::uint64_t row) const
 			{
 				std::uint64_t location = row * m_type_size;
 				std::uint64_t extentNo = location / m_data_size;
@@ -211,14 +228,12 @@ namespace dt
 
 			inline void set_null_flag(std::uint64_t row, bool setnull)
 			{
-				char *pnullset = get_null_set(row);
-				std::uint64_t row_bit = row % m_rows;
-				std::uint64_t bit = row_bit % c_nullset_word_bits;
-				std::uint64_t byte_location = (row_bit < c_nullset_word_bits) ? 0 : (row_bit / c_nullset_word_bits);
-				if (setnull)
-					pnullset[byte_location] |= (0x1 << bit);
-				else
-					pnullset[byte_location] &= ~(0x1 << bit);
+				null_word_t *pnullset = reinterpret_cast<null_word_t*>(get_null_set(row).get());
+				std::uint64_t row_in_extent = row % m_rows;
+				std::uint64_t null_word = row_in_extent / c_nullset_word_bits;
+				std::uint64_t bit_in_word = row_in_extent % c_nullset_word_bits;
+				std::uint64_t bit_mask = 1ull << bit_in_word;
+				pnullset[null_word] = setnull ? (pnullset[null_word] | bit_mask) : (pnullset[null_word] & ~bit_mask);
 			}
 
 
@@ -245,10 +260,48 @@ namespace dt
 				return(s);
 			}
 
+
+			inline void delete_strings()
+			{
+				if (m_type == tid_char_ptr) {
+					for (int r = 0; r < m_rows; r++) {
+						if (!is_null(r))
+							delete get<dt_char_ptr>(r);
+					}
+				}
+				else if ((m_type == tid_wchar_ptr)) {
+					for (int r = 0; r < m_rows; r++) {
+						if (!is_null(r))
+							delete get<dt_wchar_ptr>(r);
+					}
+				}
+			}
+
+			
+			inline void copy_buffer(const column_extent &c)
+			{
+				for (auto &buffer : c.m_extents) {
+					std::unique_ptr<char> bufCpy { new char[m_extent_size] };
+					std::memcpy(bufCpy.get(), buffer.get(), m_extent_size);
+					m_extents.emplace_back(std::move(bufCpy));
+				}
+				if (m_type == tid_char_ptr) {
+					for (int r = 0; r < c.m_rows; r++) {
+						if (!c.is_null(r))
+							set<std::string>(r, c.get<dt_char_ptr>(r));
+					}
+				}
+				else if ((m_type == tid_wchar_ptr)) {
+					for (int r = 0; r < m_rows; r++) {
+						if (!is_null(r))
+							set<std::wstring>(r, get<dt_wchar_ptr>(r));
+					}
+				}
+			}
+
+
 		private:
-			// todo: make m_extents an array of unqiue_ptr??
-			// todo: clean-up the char* memory!!!
-			std::vector<char*> m_extents;
+			mutable std::vector<std::unique_ptr<char>> m_extents;
 			std::unique_ptr<char> m_temp_data;
 			std::uint64_t m_data_size;
 			std::uint64_t m_extent_size;
@@ -267,6 +320,22 @@ namespace dt
 	{
 		public:
 			explicit row_buffer(const data_table_columns &columns);
+
+
+			row_buffer(const row_buffer &c)
+			{
+				*this = c;
+			}
+
+
+			row_buffer& operator=(const row_buffer &c)
+			{
+				m_column_extents = c.m_column_extents;
+				m_name_to_ordinal = c.m_name_to_ordinal;
+				m_rows_per_extent = c.m_rows_per_extent;
+				m_row_count = c.m_row_count;
+				return(*this);
+			}
 
 			
 			std::uint64_t add();

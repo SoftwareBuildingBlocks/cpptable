@@ -28,6 +28,14 @@ namespace dt
 			}
 
 
+			data_table_row& operator=(const data_table_row &r)
+			{
+				m_row = r.m_row;
+				m_buffer = r.m_buffer;
+				return(*this);
+			}
+
+
 			inline std::uint64_t row_num() const { return(m_row); }
 
 
@@ -79,6 +87,54 @@ namespace dt
 			}
 
 
+			inline bool is_null(std::size_t col) const
+			{
+				return(m_buffer->is_null(m_row, col));
+			}
+
+
+			inline bool is_null(const std::string &col)
+			{
+				return(m_buffer->is_null(m_row, col));
+			}
+
+			
+			template<typename T> void clear(const std::string &col)
+			{
+				m_buffer->clear<T>(m_row, col);
+			}
+
+
+			template<> void clear<dt_char_ptr>(const std::string &col)
+			{
+				m_buffer->clear<dt_char_ptr>(m_row, col);
+			}
+
+
+			template<> void clear<dt_wchar_ptr>(const std::string &col)
+			{
+				m_buffer->clear<dt_wchar_ptr>(m_row, col);
+			}
+
+
+			template<typename T> void clear(size_t col)
+			{
+				m_buffer->clear<T>(m_row, col);
+			}
+
+
+			template<> void clear<dt_char_ptr>(size_t col)
+			{
+				m_buffer->clear<dt_char_ptr>(m_row, col);
+			}
+
+
+			template<> void clear<dt_wchar_ptr>(size_t col)
+			{
+				m_buffer->clear<dt_wchar_ptr>(m_row, col);
+			}
+
+
 			inline void swap(data_table_row &r)
 			{
 				if (m_row == r.m_row)
@@ -103,12 +159,17 @@ namespace dt
 			{
 			}
 
+			data_table_rows(const data_table_rows &c) :
+				m_buffer { c.m_buffer }
+			{
+			}
+
 			inline std::uint64_t size() const { return(m_buffer.row_count()); }
 
 			inline row_type add() { return(row_type(m_buffer.add(), &m_buffer)); }
 			inline row_type row(std::uint64_t r) { return(row_type(r, &m_buffer)); }
 			inline void swap(std::uint64_t l, std::uint64_t r) { swap(row(l), row(r)); }
-			// todo: enforce that l and r are from the same table by comparing m_buffer
+			// todo: enforce that l and r are from the same table
 			inline void swap(row_type &l, row_type &r) { l.swap(r); }
 
 		public:

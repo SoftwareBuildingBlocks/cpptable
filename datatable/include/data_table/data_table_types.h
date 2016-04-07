@@ -16,6 +16,8 @@ namespace dt
 	const std::uint32_t tid_char_ptr = 10;
 	const std::uint32_t tid_wchar = 11;
 	const std::uint32_t tid_wchar_ptr = 12;
+	const std::uint32_t tid_double = 13;
+	const std::uint32_t tid_float = 14;
 
 
 	using dt_char_ptr = const char *const;

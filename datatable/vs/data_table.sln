@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "data_table", "data_table\data_table.vcxproj", "{BC65D4ED-1869-4B5C-905A-B88346BE641E}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -19,6 +19,15 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "expr_compiler_test", "expr_compiler_test\expr_compiler_test.vcxproj", "{A647FA4D-F9AC-4E99-BEE4-4DE6E9B81FF4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EBFE5381-7FCE-42FD-A8FC-B4C6DFE5E3A9} = {EBFE5381-7FCE-42FD-A8FC-B4C6DFE5E3A9}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{E15A2158-7214-4A4F-B17B-9CA9582DD168}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tickstore", "tickstore\tickstore.vcxproj", "{5D1DF083-9660-4D05-93F9-58DA1B5E942C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doxygen", "doxygen", "{B89A4693-0273-4A66-AFCF-837AE303329C}"
+	ProjectSection(SolutionItems) = preProject
+		..\Doxyfile = ..\Doxyfile
 	EndProjectSection
 EndProject
 Global
@@ -61,8 +70,19 @@ Global
 		{A647FA4D-F9AC-4E99-BEE4-4DE6E9B81FF4}.Release|x64.Build.0 = Release|x64
 		{A647FA4D-F9AC-4E99-BEE4-4DE6E9B81FF4}.Release|x86.ActiveCfg = Release|Win32
 		{A647FA4D-F9AC-4E99-BEE4-4DE6E9B81FF4}.Release|x86.Build.0 = Release|Win32
+		{5D1DF083-9660-4D05-93F9-58DA1B5E942C}.Debug|x64.ActiveCfg = Debug|x64
+		{5D1DF083-9660-4D05-93F9-58DA1B5E942C}.Debug|x64.Build.0 = Debug|x64
+		{5D1DF083-9660-4D05-93F9-58DA1B5E942C}.Debug|x86.ActiveCfg = Debug|Win32
+		{5D1DF083-9660-4D05-93F9-58DA1B5E942C}.Debug|x86.Build.0 = Debug|Win32
+		{5D1DF083-9660-4D05-93F9-58DA1B5E942C}.Release|x64.ActiveCfg = Release|x64
+		{5D1DF083-9660-4D05-93F9-58DA1B5E942C}.Release|x64.Build.0 = Release|x64
+		{5D1DF083-9660-4D05-93F9-58DA1B5E942C}.Release|x86.ActiveCfg = Release|Win32
+		{5D1DF083-9660-4D05-93F9-58DA1B5E942C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5D1DF083-9660-4D05-93F9-58DA1B5E942C} = {E15A2158-7214-4A4F-B17B-9CA9582DD168}
 	EndGlobalSection
 EndGlobal

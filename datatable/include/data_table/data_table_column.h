@@ -159,6 +159,28 @@ namespace dt
 
 
 	template<>
+	class data_table_column<double> : public basic_data_column
+	{
+		public:
+		explicit data_table_column(const std::string &name) :
+			basic_data_column { name, tid_double, sizeof(double) }
+		{
+		}
+	};
+
+
+	template<>
+	class data_table_column<float> : public basic_data_column
+	{
+		public:
+		explicit data_table_column(const std::string &name) :
+			basic_data_column { name, tid_float, sizeof(float) }
+		{
+		}
+	};
+
+
+	template<>
 	class data_table_column<char> : public basic_data_column
 	{
 		public:

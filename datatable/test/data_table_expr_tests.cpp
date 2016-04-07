@@ -36,7 +36,7 @@ TEST(data_table_expr_tests, string_test)
 	auto table = populate_test_data();
 
 	// expression to search for
-	string expr = "name = 'john'";
+	string expr = "name = 'bose'";
 
 	auto num_rows_found = 0;
 	// get rows that match expression
@@ -45,7 +45,7 @@ TEST(data_table_expr_tests, string_test)
 		num_rows_found++;
 
 		string name = r.get<dt_char_ptr>("name");
-		ASSERT_EQ(name, "john");
+		ASSERT_EQ(name, "bose");
 	}
 
 	ASSERT_EQ(num_rows_found, 1);
@@ -78,7 +78,7 @@ dt::data_table populate_test_data()
 		row.set("age", 43);
 		row.set("income", 1000000LL);
 		row.set("soc", 123456789LL);
-		row.set<string>("name", "john");
+		row.set<string>("name", "charlie");
 		row.set<char>("initial", 'A');
 	}
 	{
@@ -86,7 +86,7 @@ dt::data_table populate_test_data()
 		row.set("age", 44);
 		row.set("income", 2000000LL);
 		row.set("soc", 321456789LL);
-		row.set<string>("name", "james");
+		row.set<string>("name", "judy");
 		row.set<char>("initial", 'B');
 	}
 	{
@@ -94,7 +94,7 @@ dt::data_table populate_test_data()
 		row.set("age", 45);
 		row.set("income", 3000000LL);
 		row.set("soc", 432156789LL);
-		row.set<string>("name", "rajan");
+		row.set<string>("name", "bose");
 		row.set<char>("initial", 'C');
 	}
 

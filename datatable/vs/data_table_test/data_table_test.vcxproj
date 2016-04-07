@@ -137,6 +137,7 @@
     <ClCompile Include="$(SolutionDir)..\test\row_buffer_tests.cpp" />
     <ClCompile Include="$(SolutionDir)..\test\test_main.cpp" />
     <ClCompile Include="..\..\src\data_table_string_tests.cpp" />
+    <ClCompile Include="data_table_simple_examples.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\expr_compiler\expr_compiler.vcxproj">

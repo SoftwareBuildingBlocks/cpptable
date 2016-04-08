@@ -13,9 +13,10 @@ namespace dt
 		data_table_where_iterator(_TableTy &t, difference_type d, const std::vector<difference_type>& rows) :
 			m_raw_table{ t },
 			m_selected_row_ids(rows),
-			m_row_idx_idx{d},
-			m_row{t.row(d)}
+			m_row_idx_idx{d}
 		{
+			if(d < m_selected_row_ids.size())
+				m_row = t.row(m_selected_row_ids[d]);
 		}
 
 

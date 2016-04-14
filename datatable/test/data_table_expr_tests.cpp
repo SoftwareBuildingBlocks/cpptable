@@ -7,6 +7,10 @@ using namespace std;
 
 data_table populate_test_data();
 
+///
+/// @brief      Simple expression test
+///				age = 43 and (income > 0 and income <= 1000000)
+///
 TEST(data_table_expr_tests, simple)
 {
 	auto table = populate_test_data();
@@ -31,6 +35,10 @@ TEST(data_table_expr_tests, simple)
 	ASSERT_EQ(num_rows_found, 1);
 }
 
+///
+/// @brief      Expression test with string variables
+///				"name = 'bose'"
+///
 TEST(data_table_expr_tests, string_test)
 {
 	auto table = populate_test_data();
@@ -51,6 +59,9 @@ TEST(data_table_expr_tests, string_test)
 	ASSERT_EQ(num_rows_found, 1);
 }
 
+///
+/// @brief      Populate a datatable for the tests
+///
 dt::data_table populate_test_data()
 {
 	// reduce verbosity

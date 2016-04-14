@@ -380,7 +380,30 @@ namespace dt
 			///
 			/// @brief      An filtered iterator using a SQL-like where
 			///             expression
+
+			/// <pre>
+			///		Examples:
+			///				name = 'Euler'						// equal_to
+			///				name > 'Andrew' AND name < ''		// AND
+			///				age > 30							// greater_than
+			///				age <= 43							// greater_equal
+			///				age IN (22,22,43)					// IN
+			///				zip != 10039						// not_equal
+			///				zip <> 10039						// not_equal
+			///				zip = 10039 AND age >= 43			// compound variables
+			///				NOT zip = 10039						// NOT
+			///				TRUE								// boolean
+			///				(name IS NULL)						// parenthesis, NULL
+			///				city LIKE '%dale'					// LIKE %
+			///				city LIKE 'sc[ab]rsdal_'			// LIKE []
+			///				city LIKE 'sc[^b]rsdale'			// LIKE [] with not expression
+			///				aloha is null OR aloha = 1  		// conditional evaluation
+			///				aloha is not null  					// Not Null
+			///				city LIKE 'sca%' AND age in (20,30,43) 
 			///
+			///		Operators: 
+			///				=, >, <, !=, <>, AND, OR, IN, NOT, IS, +, -, /, ()
+			/// </pre>
 			/// @param[in]  where_clause  A SQL-like where expression used to
 			///                           filter the results of the iterator
 			///

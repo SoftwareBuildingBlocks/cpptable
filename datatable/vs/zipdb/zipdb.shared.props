@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IntDir>$(SolutionDir).tmp\zipdb\int\$(IntDir)</IntDir>
+    <OutDir>$(SolutionDir)..\bin\Windows\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Label="zipdb">
+    <IncludePath>$(SolutionDir)..\include;$(IncludePath)</IncludePath>
+    <data_table-lib-path>$(SolutionDir)..\bin\Windows\$(Platform)\$(Configuration)</data_table-lib-path>
+    <data_table-lib>$(data_table-lib-path)\data_table.lib</data_table-lib>
+    <expr_compiler-lib>$(data_table-lib-path)\expr_compiler.lib</expr_compiler-lib>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>$(data_table-lib);$(expr_compiler-lib);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+</Project>

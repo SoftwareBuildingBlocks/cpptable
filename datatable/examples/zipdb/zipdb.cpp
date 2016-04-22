@@ -8,15 +8,20 @@
 
 #include "data_table/data_table.h"
 #include "csv.h"
+#include <direct.h>
 
 void print_columns(dt::data_table& table);
 dt::data_table create_datatable();
 void load_from_csv(const std::string& fileName, dt::data_table& table);
 void print_examples();
 
+void print_curr_dir();
+
 int main(int argc, char **argv)
 {
 	std::string storeFile = argc > 1 ? argv[1] : "zip.csv";
+
+	print_curr_dir();
 
 	try
 	{
@@ -125,3 +130,9 @@ void print_examples()
 	std::cout << "\tstate = 'New York' and county = 'Westchester'" << std::endl << std::endl;
 }
 
+void print_curr_dir()
+{
+	char dir[1024];
+	_getcwd(dir, 1024);
+	std::cout << "Searching " << dir << std::endl;
+}

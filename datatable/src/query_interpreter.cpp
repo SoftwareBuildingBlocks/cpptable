@@ -5,6 +5,7 @@
 #include <data_table/string_util.h>
 #include <data_table/parser_symbol.h>
 #include <data_table/data_row.h>
+#include "data_table/expr_debug.h"
 
 using namespace std;
 
@@ -58,10 +59,15 @@ val query_interpreter::process_and(parse_tree_node&  symbol, idata_row& dr)
 	{
 		if (rhs->at(1).token.node_name == "AND")
 		{
+			DBG(cout << " " << rhs->at(1).token.node_name << " LHS(");
 			auto left = act_on_node(rhs->at(0), dr);
+			DBG(cout << ") " << left.get<bool>());
 			if (left.get<bool>() == false)
 				return left;
+			DBG(cout << " RHS(");
 			auto right = act_on_node(rhs->at(2), dr);
+			DBG(cout << ") ");
+			DBG(cout << right.get<bool>());
 			return AND(left, right, dr);
 		}
 		else
@@ -87,6 +93,7 @@ val query_interpreter::process_not(parse_tree_node&  symbol, idata_row& dr)
 	{
 		if (rhs->at(0).token.node_name == "NOT")
 		{
+			DBG(cout << " " << rhs->at(0).token.node_name << " ");
 			auto right = act_on_node(rhs->at(1), dr);
 			return NOT(right, dr);
 		}
@@ -107,58 +114,68 @@ val query_interpreter::process_pred(parse_tree_node&  symbol, idata_row& dr)
 	auto& rhs = symbol.rhs();
 	if (rhs->size() == 3 && rhs->at(1).token.node_name == ">")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
 		return greater_than(left, right, dr);
 	}
 	else if (rhs->size() == 3 && rhs->at(1).token.node_name == "<")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
-		return less_than(right, left, dr);
+		return less_than(left, right, dr);
 	}
 	else if (rhs->size() == 3 && rhs->at(1).token.node_name == "=")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
 		return equal_to(left, right, dr);
 	}
 	else if (rhs->size() == 3 && (rhs->at(1).token.node_name == "!=" || rhs->at(1).token.node_name == "<>"))
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
 		return not_equal_to(left, right, dr);
 	}
 	else if (rhs->size() == 3 && rhs->at(1).token.node_name == "<=")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
 		return less_eq(left, right, dr);
 	}
 	else if (rhs->size() == 3 && rhs->at(1).token.node_name == ">=")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
 		return greater_eq(left, right, dr);
 	}
 	else if (rhs->size() == 4 && rhs->at(1).token.node_name == "IS" && rhs->at(2).token.node_name == "NOT" && rhs->at(3).token.node_name == "NULL")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		return ISNOTNULL(left, dr);
 	}
 	else if (rhs->size() == 3 && rhs->at(1).token.node_name == "IS" && rhs->at(2).token.node_name == "NULL")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		return ISNULL(left, dr);
 	}
 	else if (rhs->size() == 3 && rhs->at(1).token.node_name == "IN")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
 		return IN(left, right, dr);
 	}
 	else if (rhs->size() == 3 && rhs->at(1).token.node_name == "LIKE")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
  		return LIKE(left, right, dr);
@@ -180,12 +197,14 @@ val query_interpreter::process_add(parse_tree_node&  symbol, idata_row& dr)
 	auto& rhs = symbol.rhs();
 	if (rhs->size() == 3 && rhs->at(1).token.node_name == "+")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
 		return add(left, right, dr);
 	}
 	else if (rhs->size() == 3 && rhs->at(1).token.node_name == "-")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
 		return subtract(left, right, dr);
@@ -207,12 +226,14 @@ val query_interpreter::process_mult(parse_tree_node&  symbol, idata_row& dr)
 	auto& rhs = symbol.rhs();
 	if (rhs->size() == 3 && rhs->at(1).token.node_name == "*")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
 		return multiply(right, left, dr);
 	}
 	else if (rhs->size() == 3 && rhs->at(1).token.node_name == "/")
 	{
+		DBG(cout << " " << rhs->at(1).token.node_name << " ");
 		auto left = act_on_node(rhs->at(0), dr);
 		auto right = act_on_node(rhs->at(2), dr);
 		return divide(right, left, dr);
@@ -234,6 +255,7 @@ val query_interpreter::process_negate(parse_tree_node&  symbol, idata_row& dr)
 	auto& rhs = symbol.rhs();
 	if (rhs->size() == 2 && rhs->at(0).token.node_name == "-")
 	{
+		DBG(cout << " " << rhs->at(0).token.node_name << " ");
 		auto right = act_on_node(rhs->at(1), dr);
 		return negate(right, dr);
 	}
@@ -252,6 +274,7 @@ val query_interpreter::process_negate(parse_tree_node&  symbol, idata_row& dr)
 val query_interpreter::process_id(parse_tree_node& symbol, idata_row& dr)
 {
 	auto idName = symbol.token.value;
+	DBG(cout << " " << symbol.token.value << " ");
 	auto retval = dr.get(rtrim(ltrim(idName)));
 	return retval;
 }
@@ -261,36 +284,43 @@ val query_interpreter::process_value(parse_tree_node&  symbol, idata_row& dr)
 	auto& rhs = symbol.rhs();
 	if (rhs->size() == 1 && rhs->at(0).token.node_name == "IntegerLiteral")
 	{
+		DBG(cout << " " << rhs->at(0).token.node_name << " ");
 		auto& intTerm = rhs->at(0);
 		return process_integer(intTerm, dr);
 	}
 	else if (rhs->size() == 1 && rhs->at(0).token.node_name == "Id")
 	{
+		DBG(cout << " " << rhs->at(0).token.node_name << " ");
 		auto& idTerm = rhs->at(0);
 		return process_id(idTerm, dr);
 	}
 	else if (rhs->size() == 1 && rhs->at(0).token.node_name == "RealLiteral")
 	{
+		DBG(cout << " " << rhs->at(0).token.node_name << " ");
 		auto& idTerm = rhs->at(0);
 		return process_double(idTerm, dr);
 	}
 	else if (rhs->size() == 1 && rhs->at(0).token.node_name == "StringLiteral")
 	{
+		DBG(cout << " " << rhs->at(0).token.node_name << " ");
 		auto& idTerm = rhs->at(0);
 		return process_string(idTerm, dr);
 	}
 	else if (rhs->size() == 1 && rhs->at(0).token.node_name == "BoolLiteral")
 	{
+		DBG(cout << " " << rhs->at(0).token.node_name << " ");
 		auto& idTerm = rhs->at(0);
 		return process_bool(idTerm, dr);
 	}
 	else if (rhs->size() == 1 && rhs->at(0).token.node_name == "NULL")
 	{
+		DBG(cout << " " << rhs->at(0).token.node_name << " ");
 		auto& idTerm = rhs->at(0);
 		return process_null(idTerm, dr);
 	}
 	else if (rhs->size() == 1 && rhs->at(0).token.node_name == "Tuple")
 	{
+		DBG(cout << " " << rhs->at(0).token.node_name << " ");
 		return act_on_node(rhs->at(0), dr);
 	}
 	else
@@ -307,7 +337,10 @@ val query_interpreter::process_tuple(parse_tree_node&  symbol, idata_row& dr)
 	auto& rhs = symbol.rhs();
 	if (rhs->size() == 3 && rhs->at(0).token.node_name == "(" && rhs->at(2).token.node_name == ")")
 	{
-		return act_on_node(rhs->at(1), dr);
+		DBG(cout << " ( ");
+		auto ret = act_on_node(rhs->at(1), dr);
+		DBG(cout << " ) ");
+		return ret;
 	}
 	else
 	{
@@ -320,6 +353,7 @@ val query_interpreter::process_expr_list(parse_tree_node&  symbol, idata_row& dr
 	auto& rhs = symbol.rhs();
 	if (rhs->size() == 3 && rhs->at(1).token.node_name == ",")
 	{
+		DBG(cout << " , ");
 		val left = act_on_node(rhs->at(0), dr);
 		val right = act_on_node(rhs->at(2), dr);
 		if (right.is<list<void*>>())
@@ -352,6 +386,7 @@ val query_interpreter::process_expr_list(parse_tree_node&  symbol, idata_row& dr
 val query_interpreter::process_integer(parse_tree_node& symbol, idata_row& dr)
 {
 	std::int64_t res = stoi(symbol.token.value);
+	DBG(cout << " " << res << " ");
 	val retval;
 	retval.set<std::int64_t>(res);
 	return retval;
@@ -360,6 +395,7 @@ val query_interpreter::process_integer(parse_tree_node& symbol, idata_row& dr)
 val query_interpreter::process_double(parse_tree_node& symbol, idata_row& dr)
 {
 	auto res = stod(symbol.token.value);
+	DBG(cout << " " << res << " ");
 	val retval;
 	retval.set<double>(res);
 	return retval;
@@ -370,6 +406,7 @@ val query_interpreter::process_string(parse_tree_node& symbol, idata_row& dr)
 	val retval;
 	auto strVal = symbol.token.value.substr(1, symbol.token.value.length() - 2);
 
+	DBG(cout << " " << strVal << " ");
 	retval.set<string>(strVal);
 	return retval;
 }
@@ -378,6 +415,8 @@ val query_interpreter::process_bool(parse_tree_node& symbol, idata_row& dr)
 {
 	auto imageLower(symbol.token.value);
 	std::transform(imageLower.begin(), imageLower.end(), imageLower.begin(), ::tolower);
+
+	DBG(cout << " " << imageLower << " ");
 
 	auto res = (imageLower == "true" ? true : false);
 	val retval;
@@ -830,9 +869,11 @@ val query_interpreter::IN(val& left, val& right, idata_row& dr)
 val query_interpreter::LIKE(val& left, val& right, idata_row& dr)
 {
 	auto rightCpy(right.get<string>());
-	rightCpy = rightCpy.substr(1, rightCpy.length() - 2);
+//  string not quoted?
+//	rightCpy = rightCpy.substr(1, rightCpy.length() - 2);
 	str_replace(rightCpy, "%", ".*");
 	str_replace(rightCpy, "_", ".");
+	DBG( std::cout << " " << rightCpy << " ");
 	regex re(rightCpy.c_str());
 	return val().set(regex_match(left.get<string>(), re));
 }

@@ -1,5 +1,6 @@
 #include "data_row.h"
 #include "result.h"
+#include <data_table/expr_debug.h>
 
 class expr_datarow_adapter : public idata_row
 {
@@ -29,54 +30,63 @@ inline val expr_datarow_adapter::get(const std::string& name)
 		case dt::tid_int8:
 		{
 			auto v = _dtrow.get<std::int8_t>(name);
+			DBG(std::cout << " " << v << " ");
 			return val().set<std::int64_t>(v);
 		}
 
 		case dt::tid_uint8 :
 		{
 			auto v = _dtrow.get<std::uint8_t>(name);
+			DBG(std::cout << " " << v << " ");
 			return val().set<std::int64_t>(v);
 		}
 
 		case dt::tid_int16 :
 		{
-			auto v = _dtrow.get<std::int16_t>(name);
+			std::int64_t v = _dtrow.get<std::int16_t>(name);
+			DBG(std::cout << " " << v << " ");
 			return val().set<std::int64_t>(v);
 		}
 
 		case dt::tid_uint16 :
 		{
-			auto v = _dtrow.get<std::uint16_t>(name);
+			std::int64_t v = _dtrow.get<std::uint16_t>(name);
+			DBG(std::cout << " " << v << " ");
 			return val().set<std::int64_t>(v);
 		}
 
 		case dt::tid_int32 :
 		{
-			auto v = _dtrow.get<std::int32_t>(name);
+			std::int64_t v = _dtrow.get<std::int32_t>(name);
+			DBG(std::cout << " " << v << " ");
 			return val().set<std::int64_t>(v);
 		}
 
 		case dt::tid_uint32 :
 		{
-			auto v = _dtrow.get<std::uint32_t>(name);
+			std::int64_t v = _dtrow.get<std::uint32_t>(name);
+			DBG(std::cout << " " << v << " ");
 			return val().set<std::int64_t>(v);
 		}
 
 		case dt::tid_int64 :
 		{
-			auto v = _dtrow.get<std::int64_t>(name);
+			std::int64_t v = _dtrow.get<std::int64_t>(name);
+			DBG(std::cout << " " << v << " ");
 			return val().set<std::int64_t>(v);
 		}
 
 		case dt::tid_uint64 :
 		{
-			auto v = _dtrow.get<std::uint64_t>(name);
+			std::int64_t v = _dtrow.get<std::uint64_t>(name);
+			DBG(std::cout << " " << v << " ");
 			return val().set<std::int64_t>(v);
 		}
 
 		case dt::tid_char_ptr:
 		{
 			auto v = _dtrow.get<dt::dt_char_ptr>(name);
+			DBG(std::cout << " " << v << " ");
 			return val().set<std::string>(std::string(v));
 		}
 

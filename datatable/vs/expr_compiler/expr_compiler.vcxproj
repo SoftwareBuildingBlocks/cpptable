@@ -170,6 +170,7 @@
     <ClInclude Include="$(SolutionDir)..\include\data_table\parse_stack.h" />
     <ClInclude Include="$(SolutionDir)..\include\data_table\tokenizer_state.h" />
     <ClInclude Include="$(SolutionDir)..\include\data_table\tokenizer_state_transition.h" />
+    <ClInclude Include="$(SolutionDir)..\include\data_table\expr_debug.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(SolutionDir)..\src\parse_stack.cpp" />

@@ -90,6 +90,13 @@ inline val expr_datarow_adapter::get(const std::string& name)
 			return val().set<std::string>(std::string(v));
 		}
 
+		case dt::tid_double:
+		{
+			std::double_t v = _dtrow.get<std::double_t>(name);
+			DBG(std::cout << " " << v << " ");
+			return val().set<std::double_t>(v);
+		}
+
 		default:
 			return val();
 	}

@@ -42,17 +42,25 @@ int main(int argc, char **argv)
 			std::cout << std::endl;
 
 			auto row_count = 0;
-			for (auto itr : zip_table.where(filter))
+			try
 			{
-				std::cout << ++row_count << ", " << itr.get<std::uint32_t>(0) << ", "
-					<< itr.get<dt::dt_char_ptr>(1) << ", "
-					<< itr.get<dt::dt_char_ptr>(2) << ", "
-					<< itr.get<dt::dt_char_ptr>(3) << ", "
-					<< itr.get<dt::dt_char_ptr>(4) << ", "
-					<< itr.get<double>(5) << ", "
-					<< itr.get<double>(6)
-					<< std::endl;
+				for (auto itr : zip_table.where(filter))
+				{
+					std::cout << ++row_count << ", " << itr.get<std::uint32_t>(0) << ", "
+						<< itr.get<dt::dt_char_ptr>(1) << ", "
+						<< itr.get<dt::dt_char_ptr>(2) << ", "
+						<< itr.get<dt::dt_char_ptr>(3) << ", "
+						<< itr.get<dt::dt_char_ptr>(4) << ", "
+						<< itr.get<double>(5) << ", "
+						<< itr.get<double>(6)
+						<< std::endl;
+				}
 			}
+			catch (const std::runtime_error& err)
+			{
+				std::cout << "Error: " << err.what() << std::endl;
+			}			
+			
 			std::cout << "Found " << row_count << " rows." << std::endl << std::endl;
 			print_columns(zip_table);
 		}

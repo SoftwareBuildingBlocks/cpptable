@@ -1,0 +1,7 @@
+Service,Instance,Partition,Name,Value
+,,,MsgRouter-IP,192.168.0.5
+MDR,Inst1,IBM,CacheSize,10M
+MDR,Inst2,MSFT,CacheSize,15M
+MDR,,,LogSize,150M
+Breakout,Inst1,,UpperBand,1.9
+Fade,,,LowerBand,0.9

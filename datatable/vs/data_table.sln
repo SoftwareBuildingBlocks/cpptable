@@ -32,6 +32,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doxygen", "doxygen", "{B89A
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zipdb", "zipdb\zipdb.vcxproj", "{B484C3F4-50B4-46AF-8B90-75312D8727EE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "servicesettings", "servicesettings\servicesettings.vcxproj", "{378599BD-05D9-431B-B52A-51D7EF92B51B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -88,6 +90,14 @@ Global
 		{B484C3F4-50B4-46AF-8B90-75312D8727EE}.Release|x64.Build.0 = Release|x64
 		{B484C3F4-50B4-46AF-8B90-75312D8727EE}.Release|x86.ActiveCfg = Release|Win32
 		{B484C3F4-50B4-46AF-8B90-75312D8727EE}.Release|x86.Build.0 = Release|Win32
+		{378599BD-05D9-431B-B52A-51D7EF92B51B}.Debug|x64.ActiveCfg = Debug|x64
+		{378599BD-05D9-431B-B52A-51D7EF92B51B}.Debug|x64.Build.0 = Debug|x64
+		{378599BD-05D9-431B-B52A-51D7EF92B51B}.Debug|x86.ActiveCfg = Debug|Win32
+		{378599BD-05D9-431B-B52A-51D7EF92B51B}.Debug|x86.Build.0 = Debug|Win32
+		{378599BD-05D9-431B-B52A-51D7EF92B51B}.Release|x64.ActiveCfg = Release|x64
+		{378599BD-05D9-431B-B52A-51D7EF92B51B}.Release|x64.Build.0 = Release|x64
+		{378599BD-05D9-431B-B52A-51D7EF92B51B}.Release|x86.ActiveCfg = Release|Win32
+		{378599BD-05D9-431B-B52A-51D7EF92B51B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +105,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{5D1DF083-9660-4D05-93F9-58DA1B5E942C} = {E15A2158-7214-4A4F-B17B-9CA9582DD168}
 		{B484C3F4-50B4-46AF-8B90-75312D8727EE} = {E15A2158-7214-4A4F-B17B-9CA9582DD168}
+		{378599BD-05D9-431B-B52A-51D7EF92B51B} = {E15A2158-7214-4A4F-B17B-9CA9582DD168}
 	EndGlobalSection
 EndGlobal

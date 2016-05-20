@@ -7,6 +7,80 @@
 
 namespace dt
 {
+	template<typename T>
+	class store_data_t
+	{
+		public:
+			inline void store(char *p, const T &v)
+			{
+				T *pdata = reinterpret_cast<T*>(p);
+				*pdata = v;
+			}
+
+			inline T get(char *p) const { return(*reinterpret_cast<T*>(p)); }
+
+			inline void clear(char *p) { }
+	};
+
+	
+	template<>
+	class store_data_t<std::string>
+	{
+		public:
+			inline void store(char *p, const std::string &v)
+			{
+				char **pdata = reinterpret_cast<char**>(p);
+				*pdata = store_string(v);
+			}
+
+			inline dt::dt_char_ptr get(char *p) const { return(*reinterpret_cast<char**>(p)); }
+
+			inline void clear(char *p)
+			{
+				char **pdata = reinterpret_cast<char**>(p);
+				delete [](*pdata);
+				*pdata = nullptr;
+			}
+
+		private:
+			inline char* store_string(const std::string &v)
+			{
+				char *s = new char[v.size() + 1];
+				std::memcpy(s, v.c_str(), v.size() + 1);
+				return(s);
+			}
+	};
+
+
+	template<>
+	class store_data_t<std::wstring>
+	{
+		public:
+			inline void store(char *p, const std::wstring &v)
+			{
+				wchar_t **pdata = reinterpret_cast<wchar_t**>(p);
+				*pdata = store_string(v);
+			}
+
+			inline dt::dt_wchar_ptr get(char *p) const { return(*reinterpret_cast<wchar_t**>(p)); }
+
+			inline void clear(char *p)
+			{
+				wchar_t **pdata = reinterpret_cast<wchar_t**>(p);
+				delete [](*pdata);
+				*pdata = nullptr;
+			}
+
+		private:
+			inline wchar_t* store_string(const std::wstring &v)
+			{
+				wchar_t *s = new wchar_t[v.size() + 1];
+				std::memcpy(s, v.c_str(), (v.size() + 1) * sizeof(wchar_t));
+				return(s);
+			}
+	};
+
+
 	class column_extent
 	{
 		public:
@@ -99,75 +173,30 @@ namespace dt
 				m_extent_size = m_data_size + m_null_map_size;
 			}
 
-
 			template<typename T> void set(std::uint64_t row, const T &v)
 			{
-				T *pdata = reinterpret_cast<T*>(get_data_p(row));
-				*pdata = v;	
+				store_data_t<T> st;
+				st.store(get_data_p(row), v);
 				set_null_flag(row, false);
 			}   
 
-			
-			template<> void set(std::uint64_t row, const std::string &v)
-			{
-				char **pdata = reinterpret_cast<char**>(get_data_p(row));
-				*pdata = store_string(v);
-				set_null_flag(row, false);
-			}
 
-
-			template<> void set(std::uint64_t row, const std::wstring &v)
-			{
-				wchar_t **pdata = reinterpret_cast<wchar_t**>(get_data_p(row));
-				*pdata = store_string(v);
-				set_null_flag(row, false);
-			}
-
-			
 			template<typename T> void clear(std::uint64_t row)
 			{
-				set_null_flag(row, true);
-			}
-
-
-			template<> void clear<dt::dt_char_ptr>(std::uint64_t row)
-			{
-				char **pdata = reinterpret_cast<char**>(get_data_p(row));
-				delete [](*pdata);
-				*pdata = nullptr;
-				set_null_flag(row, true);
-			}
-
-
-			template<> void clear<dt::dt_wchar_ptr>(std::uint64_t row)
-			{
-				wchar_t **pdata = reinterpret_cast<wchar_t**>(get_data_p(row));
-				delete [](*pdata);
-				*pdata = nullptr;
+				store_data_t<T> st;
+				st.clear(get_data_p(row));
 				set_null_flag(row, true);
 			}
 
 
 			template<typename T> T get(std::uint64_t row) const
 			{
-				T* pdata = reinterpret_cast<T*>(get_data_p(row));
-				return(*pdata);
+				store_data_t<T> st;
+				T pdata = st.get(get_data_p(row));
+				return(pdata);
 			}
 
 			
-			template<> dt_char_ptr get(std::uint64_t row) const
-			{
-				char **pdata = reinterpret_cast<char**>(get_data_p(row));
-				return(*pdata);
-			}
-
-
-			template<> dt_wchar_ptr get(std::uint64_t row) const
-			{
-				wchar_t **pdata = reinterpret_cast<wchar_t**>(get_data_p(row));
-				return(*pdata);
-			}
-
 			inline bool is_null(std::uint64_t row) const
 			{
 				null_word_t *pnullset = reinterpret_cast<null_word_t*>(get_null_set(row).get());
@@ -244,39 +273,6 @@ namespace dt
 				return(m_temp_data.get());
 			}
 
-
-			inline char* store_string(const std::string &v)
-			{
-				char *s = new char[v.size() + 1];
-				std::memcpy(s, v.c_str(), v.size() + 1);
-				return(s);
-			}
-
-
-			inline wchar_t* store_string(const std::wstring &v)
-			{
-				wchar_t *s = new wchar_t[v.size() + 1];
-				std::memcpy(s, v.c_str(), (v.size() + 1) * sizeof(wchar_t));
-				return(s);
-			}
-
-
-			inline void delete_strings()
-			{
-				if (m_type == tid_char_ptr) {
-					for (int r = 0; r < m_rows; r++) {
-						if (!is_null(r))
-							delete get<dt_char_ptr>(r);
-					}
-				}
-				else if ((m_type == tid_wchar_ptr)) {
-					for (int r = 0; r < m_rows; r++) {
-						if (!is_null(r))
-							delete get<dt_wchar_ptr>(r);
-					}
-				}
-			}
-
 			
 			inline void copy_buffer(const column_extent &c)
 			{
@@ -291,7 +287,7 @@ namespace dt
 							set<std::string>(r, c.get<dt_char_ptr>(r));
 					}
 				}
-				else if ((m_type == tid_wchar_ptr)) {
+				else if (m_type == tid_wchar_ptr) {
 					for (int r = 0; r < m_rows; r++) {
 						if (!is_null(r))
 							set<std::wstring>(r, get<dt_wchar_ptr>(r));
@@ -299,6 +295,22 @@ namespace dt
 				}
 			}
 
+
+			inline void delete_strings()
+			{
+				if (m_type == tid_char_ptr) {
+					for (int r = 0; r < m_rows; r++) {
+						if (!is_null(r))
+							delete get<dt_char_ptr>(r);
+					}
+				}
+				else if (m_type == tid_wchar_ptr) {
+					for (int r = 0; r < m_rows; r++) {
+						if (!is_null(r))
+							delete get<dt_wchar_ptr>(r);
+					}
+				}
+			}
 
 		private:
 			mutable std::vector<std::unique_ptr<char>> m_extents;
@@ -314,7 +326,7 @@ namespace dt
 			using null_word_t = std::uint64_t;
 			static const std::size_t c_nullset_word_bits = sizeof(null_word_t) * 8;
 	};
-
+	
 
 	class row_buffer
 	{
@@ -352,7 +364,6 @@ namespace dt
 				column_extent &extent = m_column_extents[col];
 				extent.set<T>(row, value);
 			}
-
 
 			template<typename T> void clear(std::uint64_t row, const std::string &col)
 			{

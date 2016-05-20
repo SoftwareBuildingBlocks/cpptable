@@ -15,6 +15,9 @@ namespace dt
 		public std::iterator<std::random_access_iterator_tag, typename _RTy::row_type>
 	{
 		public:
+			using difference_type = typename std::iterator_traits<data_table_iterator>::difference_type;
+			using reference = typename std::iterator_traits<data_table_iterator>::reference;
+			using pointer = typename std::iterator_traits<data_table_iterator>::pointer;
 			///
 			/// @brief 		Short name for the iterator of rows
 			///

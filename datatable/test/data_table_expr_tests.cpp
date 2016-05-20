@@ -90,7 +90,7 @@ dt::data_table populate_test_data()
 		row.set("income", 1000000LL);
 		row.set("soc", 123456789LL);
 		row.set<string>("name", "charlie");
-		row.set<char>("initial", 'A');
+		row.set("initial", 'A');
 	}
 	{
 		auto row = table.new_row();
@@ -98,7 +98,7 @@ dt::data_table populate_test_data()
 		row.set("income", 2000000LL);
 		row.set("soc", 321456789LL);
 		row.set<string>("name", "judy");
-		row.set<char>("initial", 'B');
+		row.set("initial", 'B');
 	}
 	{
 		auto row = table.new_row();
@@ -106,7 +106,7 @@ dt::data_table populate_test_data()
 		row.set("income", 3000000LL);
 		row.set("soc", 432156789LL);
 		row.set<string>("name", "bose");
-		row.set<char>("initial", 'C');
+		row.set("initial", 'C');
 	}
 
 	return table;

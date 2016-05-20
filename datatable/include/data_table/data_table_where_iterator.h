@@ -1,4 +1,7 @@
+#pragma once
 #include <vector>
+#include <iterator>
+
 
 namespace dt
 {
@@ -7,13 +10,16 @@ namespace dt
 		public std::iterator<std::random_access_iterator_tag, typename _TableTy::row_type>
 	{
 	public:
+		using difference_type = typename std::iterator_traits<data_table_where_iterator>::difference_type;
+		using reference = typename std::iterator_traits<data_table_where_iterator>::reference;
+		using pointer = typename std::iterator_traits<data_table_where_iterator>::pointer;
 		using iter_t = data_table_where_iterator<_TableTy>;
 
 	public:
 		data_table_where_iterator(_TableTy &t, difference_type d, const std::vector<difference_type>& rows) :
 			m_raw_table{ t },
 			m_selected_row_ids(rows),
-			m_row_idx_idx{d}
+			m_row_idx_idx { d }
 		{
 			if(d < m_selected_row_ids.size())
 				m_row = t.row(m_selected_row_ids[d]);
@@ -46,7 +52,7 @@ namespace dt
 
 		iter_t& operator++()
 		{
-			m_row_idx_idx = m_row_idx_idx++;
+			m_row_idx_idx++;
 			if (m_row_idx_idx >= m_selected_row_ids.size())
 			{
 				m_row_idx_idx = m_selected_row_ids.size();

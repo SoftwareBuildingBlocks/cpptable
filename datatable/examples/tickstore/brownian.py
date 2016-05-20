@@ -1,4 +1,9 @@
 """
+This implementation is from:
+
+    http://scipy-cookbook.readthedocs.org/items/BrownianMotion.html
+    Copyright 2015, Various authors. Revision 9a6fa7e4
+
 an() implements one dimensional Brownian motion (i.e. the Wiener process).
 """
 

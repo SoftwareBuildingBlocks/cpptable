@@ -522,52 +522,62 @@ val query_interpreter::greater_than(val& left, val& right, idata_row& dr)
 	if (left.is<double>())
 	{
 		auto leftVal = left.get<double>();
-		retval = gtfn(leftVal, right);
+		auto t = gtfn(leftVal, right);
+		retval = t;
 	}
 	else if (left.is<std::int64_t>())
 	{
 		auto leftVal = left.get<std::int64_t>();
-		retval = gtfn(leftVal, right);
+		auto t = gtfn(leftVal, right);
+		retval = t;
 	}
 	else if (left.is<std::uint64_t>())
 	{
 		auto leftVal = left.get<std::uint64_t>();
-		retval = gtfn(leftVal, right);
+		auto t = gtfn(leftVal, right);
+		retval = t;
 	}
 	else if (left.is<std::int32_t>())
 	{
 		auto leftVal = left.get<std::int32_t>();
-		retval = gtfn(leftVal, right);
+		auto t = gtfn(leftVal, right);
+		retval = t;
 	}
 	else if (left.is<std::uint32_t>())
 	{
 		auto leftVal = left.get<std::uint32_t>();
-		retval = gtfn(leftVal, right);
+		auto t = gtfn(leftVal, right);
+		retval = t;
 	}
 	else if (left.is<std::int16_t>())
 	{
 		auto leftVal = left.get<std::int16_t>();
-		retval = gtfn(leftVal, right);
+		auto t = gtfn(leftVal, right);
+		retval = t;
 	}
 	else if (left.is<std::uint16_t>())
 	{
 		auto leftVal = left.get<std::uint16_t>();
-		retval = gtfn(leftVal, right);
+		auto t = gtfn(leftVal, right);
+		retval = t;
 	}
 	else if (left.is<std::int8_t>())
 	{
 		auto leftVal = left.get<std::int8_t>();
-		retval = gtfn(leftVal, right);
+		auto t = gtfn(leftVal, right);
+		retval = t;
 	}
 	else if (left.is<std::uint8_t>())
 	{
 		auto leftVal = left.get<std::uint8_t>();
-		retval = gtfn(leftVal, right);
+		auto t = gtfn(leftVal, right);
+		retval = t;
 	}
 	else if (left.is<bool>())
 	{
 		auto leftVal = left.get<bool>();
-		retval = gtfn(leftVal?1:0, right);
+		auto t = gtfn(leftVal ? 1 : 0, right);
+		retval = t;
 	}
 	else if (left.is<string>())
 	{

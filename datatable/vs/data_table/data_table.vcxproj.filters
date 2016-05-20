@@ -27,7 +27,8 @@
     <ClInclude Include="$(SolutionDir)..\include\data_table\row_buffer.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\data_table\data_table_types.h">
+    <ClInclude Include="$(SolutionDir)..\include\data_table\data_table_types.h" />
+    <ClInclude Include="..\..\include\data_table\expr_debug.h">
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>

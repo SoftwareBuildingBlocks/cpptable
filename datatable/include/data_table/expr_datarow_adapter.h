@@ -1,3 +1,4 @@
+#pragma once
 #include "data_row.h"
 #include "result.h"
 #include <data_table/expr_debug.h>

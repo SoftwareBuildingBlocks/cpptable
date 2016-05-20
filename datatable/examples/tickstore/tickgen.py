@@ -1,5 +1,32 @@
 #!/usr/bin/env python
 
+"""
+tickgen.py generates a tab separated file of prices for the tickstore example.
+
+The generated file has the following format:
+
+    timestamp<tab>source<tab>bid<tab>offer<tab>size
+
+    timestamp - a date string with the following format YYYY-MM-DD HH:mm:ss.ffffff
+    source - the source of the price
+    bid - the bid price
+    offer - the offer price
+    size - the amount at the bid/offer price
+
+tickgen.py defaults to bid/offers for 100,000 currency prices
+
+The following are the parameters:
+
+    -n  the number of ticks to generate (default = 100,000)
+    -v  the starting price value (default = 1.12325)
+    -i  the price increment (default = 0.00001)
+    -s  a comma separated list of sources (default = SRC1,SRC2,SRC3,SRC4,SRC5)
+    -a  a comma separated list of amounts (default = 100000.0,20000.0,3000000.0,5000000.0
+    -b  the offer offset (spread) lower bound (default = 0.0001)
+    -e  the offer offset (spread) upper bound (default = 0.0009)
+    -p  the price precision
+
+"""
 import sys
 import getopt
 import numpy

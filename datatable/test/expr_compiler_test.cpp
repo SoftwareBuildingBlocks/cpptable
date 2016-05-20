@@ -159,10 +159,11 @@ TEST(ExprCompiler, SimpleUsage)
 TEST(ExprCompiler, AllUsage)
 {
 	simple_data_row dr;
+	val null_val;
 	
 	dr.set("age",val().set(43));
 	dr.set("zip",val().set(10039));
-	dr.set("name",val());  // NULL
+	dr.set("name",null_val);  // NULL
 	dr.set("city",val().set<string>("scarsdale"));
 
 	expr_compiler ec;

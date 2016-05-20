@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+    <!-- To override these properties copy them to the gest.cpp.user.overrides.props file -->
+    
+		<!-- GTestRuntimeType
+		Set GTestRuntimeType to static_runtime or dynamic_runtime to build with the C runtime
+		of your choice based on the project.  The default is dynamic_runtime.
+
+		gtest.targets will choose one of the following runtime choices depending on the
+		Configuration|Platform choice.
+
+		Only Debug and Release for Win32 and x64 are supported.  To support other build
+		configurations override the default settings by modified the supplied
+		gtest.cpp.user.overrides.props file in the solution directory. 
+		-->
+		<!--<GTestRuntimeType>static_runtime</GTestRuntimeType>-->
+    <!--<GTestRuntimeType>dynamic_runtime</GTestRuntimeType>-->
+
+    <!-- GTestConfiguration 
+    
+    -->
+    <GTestConfiguration>$(Configuration)</GTestConfiguration>
+
+    <!-- GTestPlatform 
+    GTestPlatform is used to set the $(Platform) portion of the libpath.  The package
+    contains the lib in this path.  Don't override this.
+    -->
+    <GTestPlatform>$(Platform)</GTestPlatform>
+
+
+    <!-- GTestPlatformToolset 
+    GTestPlatformToolset is used to set the $(PlatformToolset) portion of the libpath.
+    This can be overridden in circumstances where the application platform toolset
+    is different, but compatible with the gtest build.
+    -->
+    <GTestPlatformToolset>$(PlatformToolset)</GTestPlatformToolset>
+
+    <!-- GTestIncludePath 
+    GTestIncludePath contains the path of where the package include files are.  Do not
+    override this.
+    -->
+    <GTestIncludePath>$(BasePackagePath)\lib\native\include</GTestIncludePath>
+
+    <!-- GTestLibraryPath
+    The path used to include in the library path.  This can be overridden if the configuration
+    of the project does not line up with the packaged configuration name.
+    -->
+    <GTestLibraryPath>$(BasePackagePath)\lib\native\$(PackageConfiguration)</GTestLibraryPath>
+  </PropertyGroup>
+</Project>

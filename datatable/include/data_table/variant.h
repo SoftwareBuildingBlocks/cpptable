@@ -6,6 +6,7 @@
 #include <typeinfo>
 #include <type_traits>
 #include <stdexcept>
+#include <iostream>
 
 template <std::size_t arg1, std::size_t ... others>
 struct static_max;
@@ -23,6 +24,8 @@ struct static_max<arg1, arg2, others...>
 		static_max<arg2, others...>::value;
 };
 
+const std::size_t void_typeid = typeid(void).hash_code();
+
 template<typename... Ts>
 struct variant_helper;
 
@@ -30,7 +33,9 @@ template<typename F, typename... Ts>
 struct variant_helper<F, Ts...> {
 	inline static void destroy(std::size_t id, void * data)
 	{
-		if (id == typeid(F).hash_code())
+		if (id == void_typeid)
+			return;
+		if (id == typeid(F).hash_code()) 
 			reinterpret_cast<F*>(data)->~F();
 		else
 			variant_helper<Ts...>::destroy(id, data);
@@ -38,6 +43,8 @@ struct variant_helper<F, Ts...> {
 
 	inline static void move(std::size_t old_t, void * old_v, void * new_v)
 	{
+		if (old_t == void_typeid)
+			return;
 		if (old_t == typeid(F).hash_code())
 			new (new_v) F(std::move(*reinterpret_cast<F*>(old_v)));
 		else
@@ -46,6 +53,8 @@ struct variant_helper<F, Ts...> {
 
 	inline static void copy(std::size_t old_t, const void * old_v, void * new_v)
 	{
+		if (old_t == void_typeid)
+			return;
 		if (old_t == typeid(F).hash_code())
 			new (new_v) F(*reinterpret_cast<const F*>(old_v));
 		else
@@ -53,10 +62,28 @@ struct variant_helper<F, Ts...> {
 	}
 };
 
+template<> struct variant_helper<std::string> {
+	inline static void destroy(std::size_t id, void *data)
+	{
+		using str = std::string;
+		reinterpret_cast<str*>(data)->~str();
+	}
+	
+	inline static void move(std::size_t old_t, void *old_v, void *new_v)
+	{ 
+		new (new_v) typename std::string(std::move(*reinterpret_cast<std::string*>(old_v)));
+	}
+
+	inline static void copy(std::size_t old_t, const void *old_v, void *new_v)
+	{
+		new (new_v) typename std::string(*reinterpret_cast<const std::string*>(old_v));
+	}
+};
+
 template<> struct variant_helper<> {
-	inline static void destroy(std::size_t id, void * data) { /*throw std::runtime_error("variant does not have this type");*/ }
-	inline static void move(std::size_t old_t, void * old_v, void * new_v) { /*throw std::runtime_error("variant does not have this type");*/ }
-	inline static void copy(std::size_t old_t, const void * old_v, void * new_v) { /*throw std::runtime_error("variant does not have this type");*/ }
+	inline static void destroy(std::size_t id, void * data) { throw std::runtime_error("variant does not have this type"); }
+	inline static void move(std::size_t old_t, void * old_v, void * new_v) { throw std::runtime_error("variant does not have this type"); }
+	inline static void copy(std::size_t old_t, const void * old_v, void * new_v) { throw std::runtime_error("variant does not have this type"); }
 };
 
 template<typename... Ts>
@@ -88,12 +115,20 @@ public:
 		helper_t::move(old.type_id, &old.data, &data);
 	}
 
-	// Serves as both the move and the copy asignment operator.
-	variant<Ts...>& operator= (variant<Ts...>& old)
+	variant<Ts...>& operator=(variant<Ts...>&& old)
 	{
-		std::swap(type_id, old.type_id);
-		std::swap(data, old.data);
+		if (this == &old)
+			return *this;
+		helper_t::move(old.type_id, &old.data, &data);
+		type_id = old.type_id;
+		old.type_id = void_typeid;
+		return *this;
+	}
 
+	variant<Ts...>& operator=(const variant<Ts...>& old)
+	{
+		helper_t::copy(old.type_id, &old.data, &data);
+		type_id = old.type_id;
 		return *this;
 	}
 
@@ -128,5 +163,6 @@ public:
 
 	~variant() {
 		helper_t::destroy(type_id, &data);
+		type_id = void_typeid;
 	}
 };

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <typeinfo>
 #include "data_table_types.h"
 
 
@@ -11,7 +12,7 @@ namespace dt
 		public:
 			basic_data_column() { }
 
-			basic_data_column(const std::string &name, std::uint32_t type, std::uint32_t size) :
+			basic_data_column(const std::string &name, std::size_t type, std::size_t size) :
 				m_name { name },
 				m_type { type },
 				m_size { size }
@@ -44,13 +45,13 @@ namespace dt
 			}
 
 
-			inline std::uint32_t size() const { return(m_size); }
+			inline std::size_t size() const { return(m_size); }
 			inline const std::string& name() const { return(m_name); }
-			inline const std::uint32_t type() const { return(m_type); }
+			inline std::size_t type() const { return(m_type); }
 
 		private:
-			std::uint32_t m_type;
-			std::uint32_t m_size;
+			std::size_t m_type;
+			std::size_t m_size;
 			std::string m_name;
 	};
 
@@ -63,166 +64,12 @@ namespace dt
 			using value_type = T;
 
 		public:
-			data_table_column(const std::string &name, std::uint32_t type, std::uint32_t size) :
-				basic_data_column { name, type, size }
+			data_table_column(const std::string &name) :
+				basic_data_column { name, typeid(T).hash_code(), sizeof(T) }
 			{
 			}
 	};
 
-
-	template<>
-	class data_table_column<std::int8_t> : public basic_data_column
-	{
-		public:
-		explicit data_table_column(const std::string &name) :
-			basic_data_column {name, tid_int8, sizeof(std::int8_t)}
-		{
-		}
-	};
-
-
-	template<>
-	class data_table_column<std::uint8_t> : public basic_data_column
-	{
-		public:
-		explicit data_table_column(const std::string &name) :
-			basic_data_column {name, tid_uint8, sizeof(std::uint8_t)}
-		{
-		}
-	};
-
-
-	template<>
-	class data_table_column<std::int16_t> : public basic_data_column
-	{
-		public:
-		explicit data_table_column(const std::string &name) :
-			basic_data_column {name, tid_int16, sizeof(std::int16_t)}
-		{
-		}
-	};
-
-
-	template<>
-	class data_table_column<std::uint16_t> : public basic_data_column
-	{
-		public:
-		explicit data_table_column(const std::string &name) :
-			basic_data_column {name, tid_uint16, sizeof(std::uint16_t)}
-		{
-		}
-	};
-
-
-	template<>
-	class data_table_column<std::int32_t> : public basic_data_column
-	{
-		public:
-			explicit data_table_column(const std::string &name) :
-				basic_data_column { name, tid_int32, sizeof(std::int32_t) }
-			{
-			}
-	};
-
-
-	template<>
-	class data_table_column<std::uint32_t> : public basic_data_column
-	{
-		public:
-		explicit data_table_column(const std::string &name) :
-			basic_data_column {name, tid_uint32, sizeof(std::uint32_t)}
-		{
-		}
-	};
-
-
-	template<>
-	class data_table_column<std::int64_t> : public basic_data_column
-	{
-		public:
-			explicit data_table_column(const std::string &name) :
-				basic_data_column { name, tid_int64, sizeof(std::int64_t) }
-			{
-			}
-	};
-
-
-	template<>
-	class data_table_column<std::uint64_t> : public basic_data_column
-	{
-		public:
-		explicit data_table_column(const std::string &name) :
-			basic_data_column { name, tid_uint64, sizeof(std::uint64_t) }
-		{
-		}
-	};
-
-
-	template<>
-	class data_table_column<double> : public basic_data_column
-	{
-		public:
-		explicit data_table_column(const std::string &name) :
-			basic_data_column { name, tid_double, sizeof(double) }
-		{
-		}
-	};
-
-
-	template<>
-	class data_table_column<float> : public basic_data_column
-	{
-		public:
-		explicit data_table_column(const std::string &name) :
-			basic_data_column { name, tid_float, sizeof(float) }
-		{
-		}
-	};
-
-
-	template<>
-	class data_table_column<char> : public basic_data_column
-	{
-		public:
-		explicit data_table_column(const std::string &name) :
-			basic_data_column { name, tid_char, sizeof(char) }
-		{
-		}
-	};
-
-
-	template<>
-	class data_table_column<std::string> : public basic_data_column
-	{
-		public:
-		explicit data_table_column(const std::string &name) :
-			basic_data_column { name, tid_char_ptr, sizeof(char*) }
-		{
-		}
-	};
-
-
-	template<>
-	class data_table_column<wchar_t> : public basic_data_column
-	{
-		public:
-		explicit data_table_column(const std::string &name) :
-			basic_data_column { name, tid_wchar, sizeof(wchar_t) }
-		{
-		}
-	};
-
-
-	template<>
-	class data_table_column<std::wstring> : public basic_data_column
-	{
-		public:
-		explicit data_table_column(const std::string &name) :
-			basic_data_column { name, tid_char_ptr, sizeof(wchar_t*) }
-		{
-		}
-	};
-
-
+	
 	using data_table_columns = std::vector<basic_data_column>;
 }

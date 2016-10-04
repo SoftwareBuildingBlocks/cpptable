@@ -147,7 +147,7 @@ TEST(data_table_tests, add_2000_rows)
 		ASSERT_FALSE(row.is_null("timestamp")) << "at row " << i;
 	}
 
-	auto rows = table.rows();
+	auto &rows = table.rows();
 	ASSERT_EQ(rows.size(), max_rows);
 
 	for (std::uint32_t i = 0; i < max_rows; i++) {

@@ -12,7 +12,7 @@ namespace dt
 			// TODO: need to include alignment
 			// TODO: create a new memory block for each column
 			const data_table_columns::value_type& desc = columns[i];
-			m_column_extents.emplace_back(i, desc.type(), desc.size(), m_rows_per_extent);
+			m_column_extents.emplace_back(desc, i, m_rows_per_extent);
 			m_name_to_ordinal.emplace(desc.name(), i);
 		}
 	}

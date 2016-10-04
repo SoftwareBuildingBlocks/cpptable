@@ -1,58 +1,120 @@
 #pragma once
+#include <memory>
 #include <string>
 #include <vector>
 #include <typeinfo>
-#include "data_table_types.h"
 
 
 namespace dt
 {
+	struct data_column_type_desc
+	{
+		virtual ~data_column_type_desc() { }
+		virtual void clean(char *data) = 0;
+		virtual void copy(char *from, char *to) = 0;
+		virtual std::size_t type() const = 0;
+		virtual std::size_t size() const = 0 ;
+	};
+
+
+	template<typename T>
+	struct data_column_type_desc_impl : public data_column_type_desc
+	{
+		virtual void clean(char *data) override
+		{
+			reinterpret_cast<T*>(data)->~T();
+		}
+
+		virtual void copy(char *from, char *to) override
+		{
+			new (to) T(*reinterpret_cast<const T*>(from));
+		}
+
+		virtual std::size_t type() const override { return(typeid(T).hash_code()); }
+
+		virtual std::size_t size() const override { return(sizeof(T)); }
+	};
+
+
 	class basic_data_column
 	{
 		public:
 			basic_data_column() { }
 
-			basic_data_column(const std::string &name, std::size_t type, std::size_t size) :
+			template<typename U>
+			basic_data_column(const std::string &name, std::unique_ptr<U>) :
 				m_name { name },
-				m_type { type },
-				m_size { size }
+				m_destroyer { std::make_shared<data_column_type_desc_impl<U>>() }
 			{
 			}
 
 
 			basic_data_column(const basic_data_column& c) :
 				m_name { c.m_name },
-				m_type { c.m_type },
-				m_size { c.m_size }
+				m_destroyer { c.m_destroyer }
 			{
 			}
 
 
-			basic_data_column(const basic_data_column&& c) :
+			basic_data_column(basic_data_column&& c) :
 				m_name { c.m_name },
-				m_type { c.m_type },
-				m_size { c.m_size }
+				m_destroyer { c.m_destroyer }
 			{
+				c.m_destroyer = nullptr;
 			}
 
 
 			basic_data_column& operator=(const basic_data_column& c)
 			{
-				m_size = c.m_size;
-				m_type = c.m_type;
 				m_name = c.m_name;
+				m_destroyer = c.m_destroyer;
 				return(*this);
 			}
 
 
-			inline std::size_t size() const { return(m_size); }
+			basic_data_column& operator=(basic_data_column&& c)
+			{
+				if (this == &c)
+					return(*this);
+
+				m_name = c.m_name;
+				m_destroyer = c.m_destroyer;
+				c.m_destroyer = nullptr;
+				
+				return(*this);
+			}
+
 			inline const std::string& name() const { return(m_name); }
-			inline std::size_t type() const { return(m_type); }
+			
+			inline std::size_t type() const
+			{
+				if (m_destroyer)
+					return(m_destroyer->type());
+				return(0);
+			}
+		
+			inline std::size_t size() const
+			{
+				if (m_destroyer)
+					return(m_destroyer->size());
+				return(0);
+			}
+
+			inline void clean(char *data)
+			{
+				if (m_destroyer)
+					m_destroyer->clean(data);
+			}
+
+			inline void copy(char *from, char *to)
+			{
+				if (m_destroyer)
+					m_destroyer->copy(from, to);
+			}
 
 		private:
-			std::size_t m_type;
-			std::size_t m_size;
 			std::string m_name;
+			std::shared_ptr<data_column_type_desc> m_destroyer;
 	};
 
 
@@ -65,8 +127,31 @@ namespace dt
 
 		public:
 			data_table_column(const std::string &name) :
-				basic_data_column { name, typeid(T).hash_code(), sizeof(T) }
+				basic_data_column { name, std::unique_ptr<T>() }
 			{
+			}
+
+			data_table_column(const data_table_column& c) :
+				basic_data_column { c }
+			{
+			}
+
+
+			data_table_column(data_table_column&& c) :
+				basic_data_column { c }
+			{
+			}
+
+
+			data_table_column& operator=(const data_table_column &c)
+			{
+				return(basic_data_column::operator=(c));
+			}
+
+			
+			data_table_column& operator=(data_table_column &&c)
+			{
+				return(basic_data_column::operator=(c));
 			}
 	};
 

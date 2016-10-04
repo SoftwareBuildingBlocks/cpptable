@@ -50,13 +50,13 @@ namespace dt
 			}
 			
 
-			template<typename T> T get(const std::string &col) const
+			template<typename T> const T& get(const std::string &col) const
 			{
 				return(m_buffer->get<T>(m_row, col));
 			}
 
 
-			template<typename T> T get(size_t col) const
+			template<typename T> const T& get(size_t col) const
 			{
 				return(m_buffer->get<T>(m_row, col));
 			}

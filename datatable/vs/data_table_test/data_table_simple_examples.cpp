@@ -39,7 +39,7 @@ TEST(data_table_examples, one)
 	for (auto r : table)
 	{
 		cout << r.row_num() << ", " << r.get<uint32_t>("age") << ", ";
-		cout << r.get<uint64_t>("income") << ", " << r.get<dt_char_ptr>("name") << std::endl;
+		cout << r.get<uint64_t>("income") << ", " << r.get<std::string>("name") << std::endl;
 	}
 
 }
@@ -55,6 +55,6 @@ TEST(data_table_examples, two)
 	// Iterate through results
 	for (auto it = result.begin(); it != result.end(); ++it)
 	{
-		cout << it->get<dt_char_ptr>("name") << "," << it->get<int32_t>("income") << endl;
+		cout << it->get<std::string>("name") << "," << it->get<int32_t>("income") << endl;
 	}
 }

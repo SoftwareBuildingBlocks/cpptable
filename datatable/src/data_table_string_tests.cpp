@@ -19,10 +19,9 @@ TEST(data_table_tests, add_string_rows)
 
 	dt::data_table_row row1 = table.rows().add();
 
-	row1.set<std::string>("value", "add_string_rows: value 1");
-	dt::dt_char_ptr p1 = row1.get<dt::dt_char_ptr>("value");
-	// TODO: user strcmp to verify p1 is "add_string_rows: value 1"
-	std::string s1 = row1.get<dt::dt_char_ptr>("value");
-	ASSERT_EQ(s1, "add_string_rows: value 1");
-	ASSERT_NE(s1.c_str(), p1);
+	std::string s1 = "add_string_rows: value 1";
+	row1.set<std::string>("value", s1);
+	const std::string &s2 = row1.get<std::string>("value");
+	ASSERT_EQ(s2, "add_string_rows: value 1");
+	ASSERT_EQ(s1, s2);
 }

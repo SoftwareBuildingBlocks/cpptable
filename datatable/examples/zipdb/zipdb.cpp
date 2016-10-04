@@ -47,10 +47,10 @@ int main(int argc, char **argv)
 				for (auto itr : zip_table.where(filter))
 				{
 					std::cout << ++row_count << ", " << itr.get<std::uint32_t>(0) << ", "
-						<< itr.get<dt::dt_char_ptr>(1) << ", "
-						<< itr.get<dt::dt_char_ptr>(2) << ", "
-						<< itr.get<dt::dt_char_ptr>(3) << ", "
-						<< itr.get<dt::dt_char_ptr>(4) << ", "
+						<< itr.get<std::string>(1) << ", "
+						<< itr.get<std::string>(2) << ", "
+						<< itr.get<std::string>(3) << ", "
+						<< itr.get<std::string>(4) << ", "
 						<< itr.get<double>(5) << ", "
 						<< itr.get<double>(6)
 						<< std::endl;

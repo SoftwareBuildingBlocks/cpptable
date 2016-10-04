@@ -8,76 +8,22 @@
 namespace dt
 {
 	template<typename T>
-	class store_data_t
+	struct store_data_t
 	{
-		public:
-			inline void store(char *p, const T &v)
-			{
-				T *pdata = reinterpret_cast<T*>(p);
-				*pdata = v;
-			}
+		inline static void store(char *p, const T &v)
+		{
+			new (p) T(v);
+		}
 
-			inline T get(char *p) const { return(*reinterpret_cast<T*>(p)); }
+		inline static const T& get(char *p)
+		{ 
+			return(*reinterpret_cast<T*>(p));
+		}
 
-			inline void clear(char *p) { }
-	};
-
-	
-	template<>
-	class store_data_t<std::string>
-	{
-		public:
-			inline void store(char *p, const std::string &v)
-			{
-				char **pdata = reinterpret_cast<char**>(p);
-				*pdata = store_string(v);
-			}
-
-			inline dt::dt_char_ptr get(char *p) const { return(*reinterpret_cast<char**>(p)); }
-
-			inline void clear(char *p)
-			{
-				char **pdata = reinterpret_cast<char**>(p);
-				delete [](*pdata);
-				*pdata = nullptr;
-			}
-
-		private:
-			inline char* store_string(const std::string &v)
-			{
-				char *s = new char[v.size() + 1];
-				std::memcpy(s, v.c_str(), v.size() + 1);
-				return(s);
-			}
-	};
-
-
-	template<>
-	class store_data_t<std::wstring>
-	{
-		public:
-			inline void store(char *p, const std::wstring &v)
-			{
-				wchar_t **pdata = reinterpret_cast<wchar_t**>(p);
-				*pdata = store_string(v);
-			}
-
-			inline dt::dt_wchar_ptr get(char *p) const { return(*reinterpret_cast<wchar_t**>(p)); }
-
-			inline void clear(char *p)
-			{
-				wchar_t **pdata = reinterpret_cast<wchar_t**>(p);
-				delete [](*pdata);
-				*pdata = nullptr;
-			}
-
-		private:
-			inline wchar_t* store_string(const std::wstring &v)
-			{
-				wchar_t *s = new wchar_t[v.size() + 1];
-				std::memcpy(s, v.c_str(), (v.size() + 1) * sizeof(wchar_t));
-				return(s);
-			}
+		inline static void clear(char *p)
+		{
+			reinterpret_cast<T*>(p)->~T();
+		}
 	};
 
 
@@ -86,8 +32,6 @@ namespace dt
 		public:
 			column_extent() :
 				m_rows { 0 },
-				m_type { 0 },
-				m_type_size { 0 },
 				m_column { 0 },
 				m_extent_size { 0 },
 				m_data_size { 0 },
@@ -96,15 +40,15 @@ namespace dt
 			}
 
 
-			column_extent(std::size_t col, std::uint32_t type, std::uint64_t typesize, std::uint64_t rows)
+			column_extent(const basic_data_column &column, std::size_t col, std::uint64_t rows)
 			{
-				initialize(col, type, typesize, rows);
+				initialize(column, col, rows);
 			}
 
 
 			~column_extent()
 			{
-				delete_strings();
+				clear_all();
 			}
 
 			
@@ -120,12 +64,11 @@ namespace dt
 					return;
 				m_extents.swap(c.m_extents);
 				m_rows = c.m_rows;
-				m_type = c.m_type;
-				m_type_size = c.m_type_size;
 				m_column = c.m_column;
 				m_data_size = c.m_data_size;
 				m_extent_size = c.m_extent_size;
 				m_null_map_size = c.m_null_map_size;
+				m_column_data = c.m_column_data;
 				c.m_extents.clear();
 				m_temp_data = std::move(c.m_temp_data);
 			}
@@ -134,12 +77,11 @@ namespace dt
 			column_extent& operator=(const column_extent &c)
 			{
 				m_rows = c.m_rows;
-				m_type = c.m_type;
-				m_type_size = c.m_type_size;
 				m_column = c.m_column;
 				m_data_size = c.m_data_size;
 				m_extent_size = c.m_extent_size;
 				m_null_map_size = c.m_null_map_size;
+				m_column_data = c.m_column_data;
 				copy_buffer(c);
 				return(*this);
 			}
@@ -151,21 +93,20 @@ namespace dt
 					return(*this);
 				m_extents.swap(c.m_extents);
 				m_rows = c.m_rows;
-				m_type = c.m_type;
-				m_type_size = c.m_type_size;
 				m_column = c.m_column;
 				m_data_size = c.m_data_size;
 				m_extent_size = c.m_extent_size;
 				m_null_map_size = c.m_null_map_size;
+				m_column_data = c.m_column_data;
 				return(*this);
 			}
 
 
-			void initialize(std::size_t col, std::uint32_t type, std::uint64_t typesize, std::uint64_t rows)
+			void initialize(const basic_data_column &column, std::size_t col, std::uint64_t rows)
 			{
+				m_column_data = column;
+				std::size_t typesize = column.size();
 				m_rows = rows;
-				m_type = type;
-				m_type_size = typesize;
 				m_column = col;
 				std::size_t null_words = (rows / c_nullset_word_bits) + (rows % c_nullset_word_bits ? 1 : 0);
 				m_null_map_size = static_cast<std::uint32_t>(null_words * sizeof(null_word_t));
@@ -175,25 +116,21 @@ namespace dt
 
 			template<typename T> void set(std::uint64_t row, const T &v)
 			{
-				store_data_t<T> st;
-				st.store(get_data_p(row), v);
+				store_data_t<T>::store(get_data_p(row), v);
 				set_null_flag(row, false);
 			}   
 
 
 			template<typename T> void clear(std::uint64_t row)
 			{
-				store_data_t<T> st;
-				st.clear(get_data_p(row));
+				store_data_t<T>::clear(get_data_p(row));
 				set_null_flag(row, true);
 			}
 
 
-			template<typename T> T get(std::uint64_t row) const
+			template<typename T> const T& get(std::uint64_t row) const
 			{
-				store_data_t<T> st;
-				T pdata = st.get(get_data_p(row));
-				return(pdata);
+				return(store_data_t<T>::get(get_data_p(row)));
 			}
 
 			
@@ -210,15 +147,15 @@ namespace dt
 							
 			inline void swap(std::uint64_t l, std::uint64_t r)
 			{
-				std::memcpy(get_temp(), get_data_p(l), m_type_size);
-				std::memcpy(get_data_p(l), get_data_p(r), m_type_size);
-				std::memcpy(get_data_p(r), get_temp(), m_type_size);
+				std::memcpy(get_temp(), get_data_p(l), m_column_data.size());
+				std::memcpy(get_data_p(l), get_data_p(r), m_column_data.size());
+				std::memcpy(get_data_p(r), get_temp(), m_column_data.size());
 			}
 
 		private:
 			inline char* get_data_p(std::uint64_t row) const
 			{
-				std::uint64_t location = row * m_type_size;
+				std::uint64_t location = row * m_column_data.size();
 				std::uint64_t offset = m_null_map_size + (location % m_data_size);
 				std::uint64_t extentNo = location / m_data_size;
 				char *pdata = get_extent(extentNo).get() + offset;
@@ -249,7 +186,7 @@ namespace dt
 
 			inline const std::unique_ptr<char>& get_null_set(std::uint64_t row) const
 			{
-				std::uint64_t location = row * m_type_size;
+				std::uint64_t location = row * m_column_data.size();
 				std::uint64_t extentNo = location / m_data_size;
 				return(get_extent(extentNo));
 			}
@@ -269,46 +206,35 @@ namespace dt
 			inline char* get_temp()
 			{
 				if (m_temp_data == nullptr)
-					m_temp_data = std::unique_ptr<char>(new char[m_type_size]);
+					m_temp_data = std::unique_ptr<char>(new char[m_column_data.size()]);
 				return(m_temp_data.get());
 			}
 
 			
 			inline void copy_buffer(const column_extent &c)
 			{
+				int r = 0;
 				for (auto &buffer : c.m_extents) {
-					std::unique_ptr<char> bufCpy { new char[m_extent_size] };
-					std::memcpy(bufCpy.get(), buffer.get(), m_extent_size);
-					m_extents.emplace_back(std::move(bufCpy));
-				}
-				if (m_type == tid_char_ptr) {
-					for (int r = 0; r < c.m_rows; r++) {
-						if (!c.is_null(r))
-							set<std::string>(r, c.get<dt_char_ptr>(r));
-					}
-				}
-				else if (m_type == tid_wchar_ptr) {
-					for (int r = 0; r < m_rows; r++) {
-						if (!is_null(r))
-							set<std::wstring>(r, get<dt_wchar_ptr>(r));
+					/// TODO: Cannot just copy the buffer; the constructors need to be invoked
+					/// TODO: ... and for moves (move construction), the move ctr need to be invoked
+					for (int i = 0; i < c.m_rows; i++, r++) {
+						if (c.is_null(r))
+							continue;
+						char *from = c.get_data_p(r);
+						char *to = get_data_p(r);
+						m_column_data.copy(from, to);
 					}
 				}
 			}
 
 
-			inline void delete_strings()
+			inline void clear_all()
 			{
-				if (m_type == tid_char_ptr) {
-					for (int r = 0; r < m_rows; r++) {
-						if (!is_null(r))
-							delete get<dt_char_ptr>(r);
-					}
-				}
-				else if (m_type == tid_wchar_ptr) {
-					for (int r = 0; r < m_rows; r++) {
-						if (!is_null(r))
-							delete get<dt_wchar_ptr>(r);
-					}
+				for (std::uint64_t r = 0; r < m_rows; r++) {
+					if (is_null(r))
+						continue;
+					m_column_data.clean(get_data_p(r));
+					set_null_flag(r, true);
 				}
 			}
 
@@ -319,9 +245,8 @@ namespace dt
 			std::uint64_t m_extent_size;
 			std::uint64_t m_rows;
 			std::size_t m_column;
-			std::uint32_t m_type;
-			std::uint64_t m_type_size;
 			std::uint32_t m_null_map_size;
+			basic_data_column m_column_data;
 
 			using null_word_t = std::uint64_t;
 			static const std::size_t c_nullset_word_bits = sizeof(null_word_t) * 8;
@@ -378,14 +303,14 @@ namespace dt
 			}
 
 
-			template<typename T> T get(std::uint64_t row, const std::string &col)
+			template<typename T> const T& get(std::uint64_t row, const std::string &col)
 			{
 				column_extent &extent = m_column_extents[column_index(col)];
 				return(extent.get<T>(row));
 			}
 
 
-			template<typename T> T get(std::uint64_t row, std::size_t col)
+			template<typename T> const T& get(std::uint64_t row, std::size_t col)
 			{
 				column_extent &extent = m_column_extents[col];
 				return(extent.get<T>(row));

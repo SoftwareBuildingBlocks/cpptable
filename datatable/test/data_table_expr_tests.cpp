@@ -7,6 +7,7 @@ using namespace std;
 
 data_table populate_test_data();
 
+
 ///
 /// @brief      Simple expression test
 ///				age = 43 and (income > 0 and income <= 1000000)
@@ -52,7 +53,7 @@ TEST(data_table_expr_tests, string_test)
 	{
 		num_rows_found++;
 
-		string name = r.get<dt_char_ptr>("name");
+		string name = r.get<std::string>("name");
 		ASSERT_EQ(name, "bose");
 	}
 

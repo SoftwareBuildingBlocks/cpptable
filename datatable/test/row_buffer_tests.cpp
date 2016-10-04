@@ -49,11 +49,11 @@ TEST(row_buffer_tests, get_add_string_values)
 	dt::row_buffer buffer { columns };
 
 	buffer.set<std::string>(0, 1, "get_add_string_values: test string 1");
-	std::string s1 = buffer.get<dt::dt_char_ptr>(0, 1);
+	std::string s1 = buffer.get<std::string>(0, 1);
 	ASSERT_EQ(s1, "get_add_string_values: test string 1");
 
 	buffer.set<std::string>(1, "column_1", "get_add_string_values: test string 2");
-	std::string s2 = buffer.get<dt::dt_char_ptr>(1, 1);
+	std::string s2 = buffer.get<std::string>(1, 1);
 	ASSERT_EQ(s2, "get_add_string_values: test string 2");
 }
 
@@ -82,7 +82,7 @@ TEST(row_buffer_tests, is_null)
 	ASSERT_TRUE(buffer.is_null(0, 2));
 
 	buffer.set<std::string>(0, 3, "int_is_null: row 0, column 3");
-	std::string s1 = buffer.get<dt::dt_char_ptr>(0, 3);
+	std::string s1 = buffer.get<std::string>(0, 3);
 	ASSERT_FALSE(buffer.is_null(0, 3));
 	ASSERT_EQ(s1, "int_is_null: row 0, column 3");
 }
@@ -118,9 +118,9 @@ TEST(row_buffer_tests, clear_null)
 	ASSERT_TRUE(buffer.is_null(0, 2));
 
 	buffer.set<std::string>(0, 3, "int_is_null: row 0, column 3");
-	std::string s1 = buffer.get<dt::dt_char_ptr>(0, 3);
+	std::string s1 = buffer.get<std::string>(0, 3);
 	ASSERT_FALSE(buffer.is_null(0, 3));
 	ASSERT_EQ(s1, "int_is_null: row 0, column 3");
-	buffer.clear<dt::dt_char_ptr>(0, 3);
+	buffer.clear<std::string>(0, 3);
 	ASSERT_TRUE(buffer.is_null(0, 3));
 }

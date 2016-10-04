@@ -111,7 +111,7 @@ static int execute_filter(dt::data_table &ticks, const std::string &filter)
 		auto timestamp = time_point_us::time_point(us);
 
 		std::cout << to_string(timestamp) << ", "
-					  << itr.get<dt::dt_char_ptr>(1) << ", "
+					  << itr.get<std::string>(1) << ", "
 					  << itr.get<double>(2) << ", "
 					  << itr.get<double>(3) << ", "
 					  << itr.get<double>(4)

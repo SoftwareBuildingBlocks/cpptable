@@ -16,6 +16,8 @@ using namespace std;
 vector<simple_data_row> get_test_data_rows();
 static vector<simple_data_row> test_data = get_test_data_rows();
 
+/*
+
 int main(int argc, char **argv)
 {
 	::testing::InitGoogleTest(&argc, argv);
@@ -23,7 +25,7 @@ int main(int argc, char **argv)
 	std::cout << std::fixed << std::setprecision(0);
 	return RUN_ALL_TESTS();
 }
-
+*/
 void print_result(std::string& query, bool retval)
 {
 	std::cout << (retval ? "True " : "False") << " -> " << " `" << query << "'" << std::endl;

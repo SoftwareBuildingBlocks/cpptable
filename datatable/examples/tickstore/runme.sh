@@ -12,7 +12,7 @@ fi
 if [ -f "$tick_file" ]; then
 	echo "running tickstore..."
 	#TODO: use the correct path for the tickstore binary
-	./tickstore $tick_file
+	../../bin/linux/x64/debug/tickstore $tick_file
 else
 	echo "$tick_file does not exist"
 fi

@@ -36,7 +36,10 @@
     <ClCompile Include="$(SolutionDir)..\test\test_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\data_table_string_tests.cpp">
+    <ClCompile Include="data_table_simple_examples.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\data_table_string_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

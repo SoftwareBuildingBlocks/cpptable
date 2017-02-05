@@ -17,7 +17,7 @@
 #include <chrono>
 #include <iomanip>
 
-#include <data_table\data_table.h>
+#include <data_table/data_table.h>
 
 const std::string g_timeFormat = "%Y-%m-%d %H:%M:%S";
 

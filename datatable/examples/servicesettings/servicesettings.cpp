@@ -10,7 +10,12 @@
 
 #include "data_table/data_table.h"
 #include "csv.h"
+
+#ifdef _WIN32
 #include <direct.h>
+#else
+#include <unistd.h>
+#endif // _WIN32
 
 void print_columns(dt::data_table& table);
 dt::data_table create_datatable();
@@ -21,7 +26,7 @@ int main(int argc, char **argv)
 	std::string storeFile = argc > 1 ? argv[1] : "config.csv";
 
 	char dir[1024];
-	_getcwd(dir, 1024);
+	getcwd(dir, 1024);
 	std::cout << dir << std::endl;
 
 	try

@@ -8,22 +8,22 @@ namespace dt
 	{
 		public:
 			data_table_row() :
-				m_row { 0 },
-				m_buffer { nullptr }
+				m_buffer { nullptr },
+				m_row { 0 }
 			{
 			}
 
 
 			data_table_row(std::uint64_t row, row_buffer *buffers) :
-				m_row { row },
-				m_buffer { buffers }
+				m_buffer { buffers },
+				m_row { row }
 			{
 			}
 
 
 			data_table_row(const data_table_row &r) :
-				m_row { r.m_row },
-				m_buffer { r.m_buffer }
+				m_buffer { r.m_buffer },
+				m_row { r.m_row }
 			{
 			}
 

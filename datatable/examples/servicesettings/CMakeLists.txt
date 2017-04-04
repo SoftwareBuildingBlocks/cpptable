@@ -17,10 +17,8 @@ link_directories(
 	${LIBRARY_OUTPUT_PATH}
 )
 
-target_link_libraries(
-	servicesettings	
-	pthread
-	data_table
-	expr_compiler
-)
-
+if (WIN32)
+	target_link_libraries(servicesettings data_table expr_compiler)
+else (WIN32)
+	target_link_libraries(servicesettings pthread data_table expr_compiler)
+endif (WIN32)

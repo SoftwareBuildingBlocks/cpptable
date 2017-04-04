@@ -17,10 +17,4 @@ link_directories(
 	${LIBRARY_OUTPUT_PATH}
 )
 
-target_link_libraries(
-	tickstore	
-	pthread
-	data_table
-	expr_compiler
-)
-
+target_link_libraries(tickstore	data_table expr_compiler)

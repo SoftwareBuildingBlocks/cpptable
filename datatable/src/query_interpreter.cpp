@@ -860,11 +860,11 @@ val query_interpreter::IN(val& left, val& right, idata_row& dr)
 			auto& rightItem = *static_cast<val*>(item);
 			if (equal_to(left, rightItem, dr).get<bool>())
 			{
-				for (auto tempitem : valuecoll)
-				{
-					auto tmpResultItem = static_cast<val*>(item);
-					//					delete tmpResultItem;
-				}
+				//for (auto tempitem : valuecoll)
+				//{
+				//	auto tmpResultItem = static_cast<val*>(item);
+				//	//					delete tmpResultItem;
+				//}
 				return val().set<bool>(true);
 			}
 		}

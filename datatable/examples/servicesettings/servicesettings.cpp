@@ -41,11 +41,6 @@ int main(int argc, char **argv)
 
 		std::cout << std::endl;
 
-		for (auto itr : cfg_table.where(filter))
-		{
-			size_t col = 0;
-			bool val = itr.is_null(col);
-		}
 		print_columns(cfg_table);
 
 	}

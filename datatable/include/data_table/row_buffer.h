@@ -31,10 +31,10 @@ namespace dt
 	{
 		public:
 			column_extent() :
+				m_data_size { 0 },
+				m_extent_size { 0 },
 				m_rows { 0 },
 				m_column { 0 },
-				m_extent_size { 0 },
-				m_data_size { 0 },
 				m_null_map_size { 0 }
 			{
 			}
@@ -214,7 +214,7 @@ namespace dt
 			inline void copy_buffer(const column_extent &c)
 			{
 				int r = 0;
-				for (auto &buffer : c.m_extents) {
+				//for (auto &buffer : c.m_extents) {
 					/// TODO: Cannot just copy the buffer; the constructors need to be invoked
 					/// TODO: ... and for moves (move construction), the move ctr need to be invoked
 					for (int i = 0; i < c.m_rows; i++, r++) {
@@ -224,7 +224,7 @@ namespace dt
 						char *to = get_data_p(r);
 						m_column_data.copy(from, to);
 					}
-				}
+				//}
 			}
 
 

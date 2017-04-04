@@ -58,14 +58,14 @@ static void populate_table_random(dt::data_table &table, std::uint32_t count)
 }
 
 
-static void dump_rows(dt::data_table &table)
-{
-	std::cout << "Start => Dump Rows***********************" << std::endl;
-	for (auto r : table) {
-		std::cout << r.row_num() << ", " << r.get<std::uint32_t>("id") << ", " << r.get<std::uint64_t>("value") << ", " << r.get<std::uint64_t>("timestamp") << std::endl;
-	}
-	std::cout << "End   => Dump Rows***********************" << std::endl;
-}
+//[[maybe_unused]] static void dump_rows(dt::data_table &table)
+//{
+//	std::cout << "Start => Dump Rows***********************" << std::endl;
+//	for (auto r : table) {
+//		std::cout << r.row_num() << ", " << r.get<std::uint32_t>("id") << ", " << r.get<std::uint64_t>("value") << ", " << r.get<std::uint64_t>("timestamp") << std::endl;
+//	}
+//	std::cout << "End   => Dump Rows***********************" << std::endl;
+//}
 
 
 template<typename T>

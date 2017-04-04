@@ -310,8 +310,8 @@ namespace dt
 			/// @param[in]  columns  the column definition for the table
 			///
 			explicit data_table(const data_table_columns &columns) :
-				m_rows { columns },
-				m_columns { columns }
+				m_columns { columns },
+				m_rows { columns }
 			{
 			}
 
@@ -321,8 +321,8 @@ namespace dt
 			/// @param[in]  t     the table to copy
 			///
 			data_table(const data_table &t) :
-				m_rows { t.m_rows },
-				m_columns { t.m_columns }
+				m_columns { t.m_columns },
+				m_rows { t.m_rows }
 			{
 			}
 

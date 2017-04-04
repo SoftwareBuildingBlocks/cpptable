@@ -28,8 +28,8 @@ namespace dt
 
 		data_table_where_iterator(const iter_t &r) :
 			m_raw_table{ r.m_raw_table },
-			m_row_idx_idx{ r.m_row_idx_idx },
 			m_selected_row_ids(r.m_selected_row_ids),
+			m_row_idx_idx{ r.m_row_idx_idx },
 			m_row(r.m_row)
 		{
 		}

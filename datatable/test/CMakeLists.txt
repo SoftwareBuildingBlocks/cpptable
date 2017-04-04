@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.5)
 
 project(data_table_tests)
 
+include(FindGTest)
+if (NOT GTEST_FOUND)
+	message("GTEST NOT FOUND... gtests will NOT be built")
+	return()
+endif (NOT GTEST_FOUND)
+
 set(CMAKE_BINARY_DIR ${BUILD_BIN_DIR})
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
@@ -28,13 +34,11 @@ target_compile_definitions(
 	GTEST_LANG_CXX11
 ) 
 
-target_link_libraries(
-	data_table_test
-	gtest
-	pthread
-	data_table
-	expr_compiler
-)
+if (WIN32)
+	target_link_libraries(data_table_test gtest data_table expr_compiler)
+else (WIN32)
+	target_link_libraries(data_table_test gtest pthread data_table expr_compiler)
+endif (WIN32)
 
 add_executable(
 	expr_compiler_test
@@ -49,11 +53,8 @@ target_compile_definitions(
 	GTEST_LANG_CXX11
 )
 
-target_link_libraries(
-	expr_compiler_test
-	gtest
-	pthread
-	data_table
-	expr_compiler
-)
-
+if (WIN32)
+	target_link_libraries(expr_compiler_test gtest data_table expr_compiler)
+else (WIN32)
+	target_link_libraries(expr_compiler_test gtest pthread data_table expr_compiler )
+endif (WIN32)

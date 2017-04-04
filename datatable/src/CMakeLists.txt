@@ -8,6 +8,14 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 include_directories("${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/../include")
 
+option(EXPR_USE_LOGDEBUG "build with expression library console tracing" OFF)
+if (EXPR_USE_LOGDEBUG)
+	message(STATUS "Console expression tracing: Enabled")
+	add_definitions(-D_DEBUGEXPR -D_DEBUG)
+else (EXPR_USE_LOGDEBUG)
+	message(STATUS "Console expression tracing: Disabled")
+endif (EXPR_USE_LOGDEBUG)
+
 add_library(
 	data_table 
 	${PROJECT_SOURCE_DIR}/data_table_where.cpp

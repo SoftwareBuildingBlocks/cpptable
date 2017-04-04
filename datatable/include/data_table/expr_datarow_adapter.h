@@ -90,7 +90,6 @@ inline void expr_datarow_adapter::set(const std::string& name, val& v)
 {
 	std::size_t id = _map_colname_type[name];
 	if (id == typeid(std::int8_t).hash_code()) {
-		auto x = v.get<std::int64_t>();
 		_dtrow.set(name, std::int8_t(v.get<std::int64_t>()));
 	}
 	else if (id == typeid(std::uint8_t).hash_code()) {

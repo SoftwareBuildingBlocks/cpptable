@@ -154,7 +154,7 @@ int main(int argc, char **argv)
 		while (true) {
 			std::cout << "filter>> ";
 			std::getline(std::cin, filter);
-			if (filter == "exit")
+			if (filter == "exit" || filter == "quit")
 				break;
 
 			try {

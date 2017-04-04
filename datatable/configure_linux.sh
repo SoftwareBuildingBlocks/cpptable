@@ -14,5 +14,5 @@ else
 	exit 1
 fi
 
-cmake -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_CXX_FLAGS=-std=c++1y -DCMAKE_BUILD_TYPE="$build_type"
+cmake -DBUILD_ALL=ON -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_BUILD_TYPE="$build_type"
 

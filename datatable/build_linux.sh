@@ -1,4 +1,4 @@
 #!/bin/sh
 
-cmake --build . --target $1
+cmake --build . --config $1
 

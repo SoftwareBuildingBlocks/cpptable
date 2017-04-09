@@ -13,7 +13,7 @@ A table like data structure for C++
 * Summary of set up
 * Configuration
 * Dependencies
-* Database configuration
+* How to run tests
 * How to run tests
 * Deployment instructions
 

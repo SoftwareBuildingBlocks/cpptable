@@ -13,7 +13,9 @@ option(BUILD_EXAMPLES "build example projects" OFF)
 ###################################
 ## check for compiler support
 ###################################
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_COMPILER_IS_GNUCXX)
+MESSAGE("Compiler Id = " ${CMAKE_CXX_COMPILER_ID})
+
+if (CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_COMPILER_IS_GNUCXX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
 	include(CheckCXXCompilerFlag)
 	CHECK_CXX_COMPILER_FLAG("-std=c++1y" COMPILER_SUPPORTS_CXX1y)
@@ -49,6 +51,7 @@ else (WIN32)
 	set(BUILD_BIN_DIR "${CMAKE_SOURCE_DIR}/bin/${CMAKE_SYSTEM_NAME}/x64/${BUILD_CONFIGURATION}" CACHE INTERNAL "")
 endif (WIN32)
 message("bin files will be located in: " ${BUILD_BIN_DIR})
+
 
 add_subdirectory(src)
 

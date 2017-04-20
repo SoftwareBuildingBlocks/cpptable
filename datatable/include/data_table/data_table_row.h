@@ -1,5 +1,5 @@
 #pragma once
-#include "row_buffer.h"
+#include <data_table/row_buffer.h>
 
 
 namespace dt

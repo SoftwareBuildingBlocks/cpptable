@@ -1,9 +1,9 @@
 #pragma once
 #include <algorithm>
 #include <iterator>
-#include "data_table_column.h"
-#include "data_table_row.h"
-#include "data_table_where_iterator.h"
+#include <data_table/data_table_column.h>
+#include <data_table/data_table_row.h>
+#include <data_table/data_table_where_iterator.h>
 
 namespace dt 
 {

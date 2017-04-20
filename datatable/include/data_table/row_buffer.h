@@ -2,8 +2,8 @@
 #include <memory>
 #include <unordered_map>
 #include <cstdint>
-#include "data_table_column.h"
 #include <cstring>
+#include <data_table/data_table_column.h>
 
 namespace dt
 {

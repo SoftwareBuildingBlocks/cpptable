@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <sstream>
 
-#include "data_table/data_table.h"
+#include <data_table/data_table.h>
 #include "csv.h"
 
 #ifdef _WIN32

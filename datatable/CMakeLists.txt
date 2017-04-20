@@ -59,10 +59,28 @@ add_subdirectory(src/data_table)
 ## BUILD_ALL
 ###################################
 if (BUILD_ALL)
+	set(BUILD_NANODBC_READER ON)
 	set(BUILD_GTESTS ON)
 	set(BUILD_DOCS ON)
 	set(BUILD_EXAMPLES ON)
 endif (BUILD_ALL)
+
+###################################
+## NANODBC READER
+###################################
+if (BUILD_NANODBC_READER)
+	message(STATUS "NANODBC Reader: Enabled")
+	include(CheckIncludeFile)
+	check_include_file(nanodbc.h HAVE_NANODBC_H)
+	if (HAVE_NANODBC_H)
+		add_subdirectory(src/data_reader/nanodbc)
+	else (HAVE_NANODBC_H)
+		message(STATUS "NANODBC Reader is Enabled, but it cannot be found and is DISABLED.")
+	endif (HAVE_NANODBC_H)
+else (BUILD_NANODBC_READER)
+	message(STATUS "NANODBC Reader: Disabled")
+endif (BUILD_NANODBC_READER)
+
 
 ###################################
 ## GTEST

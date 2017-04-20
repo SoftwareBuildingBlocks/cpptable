@@ -1,7 +1,7 @@
 #include <vector>
 #include <functional>
 #include <tuple>
-#include <data_table\data_table.h>
+#include <data_table/data_table.h>
 #include <nanodbc.h>
 
 #ifdef _WIN32

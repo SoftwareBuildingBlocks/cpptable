@@ -53,7 +53,7 @@ endif (WIN32)
 message("bin files will be located in: " ${BUILD_BIN_DIR})
 
 
-add_subdirectory(src)
+add_subdirectory(src/data_table)
 
 ###################################
 ## BUILD_ALL

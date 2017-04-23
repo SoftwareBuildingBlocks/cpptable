@@ -6,7 +6,7 @@ set(CMAKE_BINARY_DIR ${BUILD_BIN_DIR})
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
-include_directories("${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/../include")
+include_directories("${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/../../include")
 
 option(EXPR_USE_LOGDEBUG "build with expression library console tracing" OFF)
 if (EXPR_USE_LOGDEBUG)

@@ -1,4 +1,5 @@
-#include <data_table/lalr_state_data.h>
+#include "lalr_state_data.h"
+
 
 std::map<int, production_rule> lalr_state_data::get_rules()
 {

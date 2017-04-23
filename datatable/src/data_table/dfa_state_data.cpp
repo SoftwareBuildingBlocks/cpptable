@@ -1,5 +1,6 @@
-#include <data_table/dfa_state_data.h>
-#include <data_table/string_util.h>
+#include "dfa_state_data.h"
+#include "string_util.h"
+
 
 std::set<std::string> dfa_state_data::get_terminal_tokens()
 {

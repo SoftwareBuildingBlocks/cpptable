@@ -1,13 +1,12 @@
 #include <string>
 #include <data_table/data_table.h>
-#include <data_table/expr.h>
-#include <data_table/expr_compiler.h>
-#include <data_table/expr_datarow_adapter.h>
+#include "expr.h"
+#include "expr_compiler.h"
+#include "expr_datarow_adapter.h"
 
 
 namespace dt
 {
-
 	data_table::where_iterator data_table::where(const std::string& where_clause)
 	{
 		expr_compiler ec;
@@ -25,6 +24,4 @@ namespace dt
 
 		return data_table::where_iterator(m_rows, 0, sel_rows);
 	}
-
 }
-

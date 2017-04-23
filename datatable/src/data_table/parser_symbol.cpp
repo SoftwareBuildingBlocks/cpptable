@@ -1,4 +1,4 @@
-#include <data_table/parser_symbol.h>
+#include "parser_symbol.h"
 
 parse_tree_node::parse_tree_node() : parser_state_idx(0), _p_rhs(nullptr)
 {

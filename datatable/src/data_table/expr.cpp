@@ -1,6 +1,7 @@
-#include <data_table/expr.h>
-#include <data_table/query_interpreter.h>
-#include <data_table/expr_debug.h>
+#include "expr.h"
+#include "query_interpreter.h"
+#include "expr_debug.h"
+
 
 expr::expr(parse_tree_node& root) : _root(root)
 {

@@ -1,10 +1,11 @@
 #include <sstream>
-#include <data_table/expr.h>
-#include <data_table/token.h>
-#include <data_table/string_util.h>
-#include <data_table/parser.h>
-#include <data_table/expr_compiler.h>
-#include <data_table/tokenizer.h>
+#include "expr.h"
+#include "token.h"
+#include "string_util.h"
+#include "parser.h"
+#include "expr_compiler.h"
+#include "tokenizer.h"
+
 
 using namespace std;
 

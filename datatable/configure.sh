@@ -9,7 +9,7 @@ elif [ "${build_type^^}" = "RELEASE" ]; then
 	build_type="Release"
 else
 	echo "$1 is not a valid parameter..."
-	echo "configure_linux [Release|Debug]"
+	echo "configure [Release|Debug]"
 	echo
 	exit 1
 fi

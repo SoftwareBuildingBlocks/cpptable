@@ -2,11 +2,11 @@
 
 A table like data structure for C++
 
+Coming soon....
 ### What is this repository for? ###
 
 * Quick summary
 * Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
 ### How do I get set up? ###
 

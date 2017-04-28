@@ -1,6 +1,11 @@
 # C++ Datatable #
 
 A table like data structure for C++
+* Define columns at run time
+* Works with stl
+* SQL query interface
+* Compiles in Linux, MacOS, Windows
+* Compiles with CLang, GCC, MSVC
 
 Coming soon....
 ### What is this repository for? ###

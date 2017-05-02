@@ -15,9 +15,9 @@ A table like data structure for C++
 * [STL usage](STLUsage.md)
 
 ### Examples ###
-* Hierarchical Settings from csv file
-* Tick store
-* Zip db with interactive query
+* [Hierarchical Settings from csv file](datatable/examples/servicesettings)
+* [Tick store](datatable/examples/tickstore)
+* [Zip csv file datatable with interactive query](datatable/examples/zipdb)
 
 ### What is this repository for? ###
 

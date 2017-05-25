@@ -1,4 +1,4 @@
-# C++ Datatable #
+# [C++ Datatable](http://www.cpptable.org/) #
 
 A table like data structure for C++
 * Define columns at run time
@@ -6,8 +6,6 @@ A table like data structure for C++
 * SQL query interface
 * Compiles in Linux, MacOS, Windows
 * Compiles with CLang, GCC, MSVC
-
-[CppTable](http://www.cpptable.org/)
 
 ### Usage ###
 * [Create table, define columns](CreateTable.md)

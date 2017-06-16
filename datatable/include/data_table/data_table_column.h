@@ -35,6 +35,8 @@ namespace dt
 		virtual std::size_t size() const override { return(sizeof(T)); }
 	};
 
+	// Struct to capture data column type in the constructor of basic_data_column
+	template <typename U> struct identity { typedef U type; };
 
 	class basic_data_column
 	{
@@ -42,7 +44,7 @@ namespace dt
 			basic_data_column() { }
 
 			template<typename U>
-			basic_data_column(const std::string &name, std::unique_ptr<U>) :
+			basic_data_column(const std::string &name, identity<U>) :
 				m_name { name },
 				m_destroyer { std::make_shared<data_column_type_desc_impl<U>>() }
 			{
@@ -118,7 +120,6 @@ namespace dt
 	};
 
 
-
 	template<typename T>
 	class data_table_column : public basic_data_column
 	{
@@ -127,7 +128,7 @@ namespace dt
 
 		public:
 			data_table_column(const std::string &name) :
-				basic_data_column { name, std::unique_ptr<T>() }
+				basic_data_column { name, identity<T>() }
 			{
 			}
 

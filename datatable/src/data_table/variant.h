@@ -63,27 +63,27 @@ struct variant_helper<F, Ts...> {
 };
 
 template<> struct variant_helper<std::string> {
-	inline static void destroy(std::size_t id, void *data)
+	inline static void destroy(std::size_t, void *data)
 	{
 		using str = std::string;
 		reinterpret_cast<str*>(data)->~str();
 	}
 	
-	inline static void move(std::size_t old_t, void *old_v, void *new_v)
+	inline static void move(std::size_t, void *old_v, void *new_v)
 	{ 
 		new (new_v) typename std::string(std::move(*reinterpret_cast<std::string*>(old_v)));
 	}
 
-	inline static void copy(std::size_t old_t, const void *old_v, void *new_v)
+	inline static void copy(std::size_t, const void *old_v, void *new_v)
 	{
 		new (new_v) typename std::string(*reinterpret_cast<const std::string*>(old_v));
 	}
 };
 
 template<> struct variant_helper<> {
-	inline static void destroy(std::size_t id, void * data) { throw std::runtime_error("variant does not have this type"); }
-	inline static void move(std::size_t old_t, void * old_v, void * new_v) { throw std::runtime_error("variant does not have this type"); }
-	inline static void copy(std::size_t old_t, const void * old_v, void * new_v) { throw std::runtime_error("variant does not have this type"); }
+	inline static void destroy(std::size_t, void *) { throw std::runtime_error("variant does not have this type"); }
+	inline static void move(std::size_t, void *, void *) { throw std::runtime_error("variant does not have this type"); }
+	inline static void copy(std::size_t, const void *, void *) { throw std::runtime_error("variant does not have this type"); }
 };
 
 template<typename... Ts>

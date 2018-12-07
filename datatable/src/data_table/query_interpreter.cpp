@@ -40,7 +40,6 @@ val query_interpreter::process_expression(parse_tree_node& symbol, idata_row& dr
 		{
 			throw runtime_error(format<128>("process_expression wrong child node"));
 		}
-		return val();
 	}
 	else
 	{
@@ -74,7 +73,6 @@ val query_interpreter::process_and(parse_tree_node&  symbol, idata_row& dr)
 		{
 			throw runtime_error(format<128>("process_and wrong child node"));
 		}
-		return val();
 	}
 	else
 	{
@@ -101,7 +99,6 @@ val query_interpreter::process_not(parse_tree_node&  symbol, idata_row& dr)
 		{
 			throw runtime_error(format<128>("process_not wrong child node"));
 		}
-		return val();
 	}
 	else
 	{
@@ -188,8 +185,6 @@ val query_interpreter::process_pred(parse_tree_node&  symbol, idata_row& dr)
 	{
 		throw runtime_error("Unknown Predicate: not yet implemented");
 	}
-
-	return val();
 }
 
 val query_interpreter::process_add(parse_tree_node&  symbol, idata_row& dr)
@@ -217,8 +212,6 @@ val query_interpreter::process_add(parse_tree_node&  symbol, idata_row& dr)
 	{
 		throw runtime_error("Unexpected branching of And Expression");
 	}
-
-	return val();
 }
 
 val query_interpreter::process_mult(parse_tree_node&  symbol, idata_row& dr)
@@ -246,8 +239,6 @@ val query_interpreter::process_mult(parse_tree_node&  symbol, idata_row& dr)
 	{
 		throw runtime_error("Unexpected branching of Mult Expression");
 	}
-
-	return val();
 }
 
 val query_interpreter::process_negate(parse_tree_node&  symbol, idata_row& dr)
@@ -267,8 +258,6 @@ val query_interpreter::process_negate(parse_tree_node&  symbol, idata_row& dr)
 	{
 		throw runtime_error("Unexpected branching of negate Expression");
 	}
-
-	return val();
 }
 
 val query_interpreter::process_id(parse_tree_node& symbol, idata_row& dr)
@@ -328,8 +317,6 @@ val query_interpreter::process_value(parse_tree_node&  symbol, idata_row& dr)
 		throw runtime_error(format<128>("Unexpected branching of process_value childcount:%d childname:%s"
 										,rhs->size(),rhs->at(0).token.node_name.c_str()));
 	}
-
-	return val();
 }
 
 val query_interpreter::process_tuple(parse_tree_node&  symbol, idata_row& dr)
@@ -383,7 +370,7 @@ val query_interpreter::process_expr_list(parse_tree_node&  symbol, idata_row& dr
 	}
 }
 
-val query_interpreter::process_integer(parse_tree_node& symbol, idata_row& dr)
+val query_interpreter::process_integer(parse_tree_node& symbol, idata_row&)
 {
 	std::int64_t res = stoi(symbol.token.value);
 	DBG(cout << " " << res << " ");
@@ -392,7 +379,7 @@ val query_interpreter::process_integer(parse_tree_node& symbol, idata_row& dr)
 	return retval;
 }
 
-val query_interpreter::process_double(parse_tree_node& symbol, idata_row& dr)
+val query_interpreter::process_double(parse_tree_node& symbol, idata_row&)
 {
 	auto res = stod(symbol.token.value);
 	DBG(cout << " " << res << " ");
@@ -401,7 +388,7 @@ val query_interpreter::process_double(parse_tree_node& symbol, idata_row& dr)
 	return retval;
 }
 
-val query_interpreter::process_string(parse_tree_node& symbol, idata_row& dr)
+val query_interpreter::process_string(parse_tree_node& symbol, idata_row&)
 {
 	val retval;
 	auto strVal = symbol.token.value.substr(1, symbol.token.value.length() - 2);
@@ -411,7 +398,7 @@ val query_interpreter::process_string(parse_tree_node& symbol, idata_row& dr)
 	return retval;
 }
 
-val query_interpreter::process_bool(parse_tree_node& symbol, idata_row& dr)
+val query_interpreter::process_bool(parse_tree_node& symbol, idata_row&)
 {
 	auto imageLower(symbol.token.value);
 	std::transform(imageLower.begin(), imageLower.end(), imageLower.begin(), ::tolower);
@@ -424,7 +411,7 @@ val query_interpreter::process_bool(parse_tree_node& symbol, idata_row& dr)
 	return retval;
 }
 
-val query_interpreter::process_null(parse_tree_node& terminal, idata_row& dr)
+val query_interpreter::process_null(parse_tree_node&, idata_row&)
 {
 	return val();
 }
@@ -459,52 +446,52 @@ val gtfn(L left, val& right)
 	if (right.is<double>())
 	{
 		auto rightVal = right.get<double>();
-		return val().set<bool>(left > rightVal);
+		return val().set<bool>(static_cast<double>(left) > rightVal);
 	}
 	else if (right.is<std::int64_t>())
 	{
 		auto rightVal = right.get<std::int64_t>();
-		return val().set<bool>(left > rightVal);
+		return val().set<bool>(static_cast<std::int64_t>(left) > rightVal);
 	}
 	else if (right.is<std::int32_t>())
 	{
 		auto rightVal = right.get<std::int32_t>();
-		return val().set<bool>(left > rightVal);
+		return val().set<bool>(static_cast<std::int32_t>(left) > rightVal);
 	}
 	else if (right.is<std::int16_t>())
 	{
 		auto rightVal = right.get<std::int16_t>();
-		return val().set<bool>(left > rightVal);
+		return val().set<bool>(static_cast<std::int16_t>(left) > rightVal);
 	}
 	else if (right.is<std::int8_t>())
 	{
 		auto rightVal = right.get<std::int8_t>();
-		return val().set<bool>(left > rightVal);
+		return val().set<bool>(static_cast<std::int8_t>(left) > rightVal);
 	}
 	else if (right.is<std::uint64_t>())
 	{
 		auto rightVal = right.get<std::uint64_t>();
-		return val().set<bool>(left > rightVal);
+		return val().set<bool>(static_cast<std::uint64_t>(left) > rightVal);
 	}
 	else if (right.is<std::uint32_t>())
 	{
 		auto rightVal = right.get<std::uint32_t>();
-		return val().set<bool>(left > rightVal);
+		return val().set<bool>(static_cast<std::uint32_t>(left) > rightVal);
 	}
 	else if (right.is<std::uint16_t>())
 	{
 		auto rightVal = right.get<std::uint16_t>();
-		return val().set<bool>(left > rightVal);
+		return val().set<bool>(static_cast<std::uint16_t>(left) > rightVal);
 	}
 	else if (right.is<std::uint8_t>())
 	{
 		auto rightVal = right.get<std::uint8_t>();
-		return val().set<bool>(left > rightVal);
+		return val().set<bool>(static_cast<std::uint8_t>(left) > rightVal);
 	}
 	else if (right.is<bool>())
 	{
 		auto rightVal = right.get<bool>();
-		return val().set<bool>(left > static_cast<int>(rightVal));
+		return val().set<bool>(static_cast<int>(left) > static_cast<int>(rightVal));
 	}
 	else if (!right.valid())
 	{
@@ -516,7 +503,7 @@ val gtfn(L left, val& right)
 	}
 }
 
-val query_interpreter::greater_than(val& left, val& right, idata_row& dr)
+val query_interpreter::greater_than(val& left, val& right, idata_row&)
 {
 	val retval;
 	if (left.is<double>())
@@ -614,7 +601,7 @@ val query_interpreter::less_than(val& left, val& right, idata_row& dr)
 	return greater_than(right, left, dr);
 }
 
-val query_interpreter::OR(val& left, val& right, idata_row& dr)
+val query_interpreter::OR(val& left, val& right, idata_row&)
 {
 	auto leftval = left.get<bool>();
 	auto rightval = right.get<bool>();
@@ -624,7 +611,7 @@ val query_interpreter::OR(val& left, val& right, idata_row& dr)
 	return ret;
 }
 
-val query_interpreter::AND(val& left, val& right, idata_row& dr)
+val query_interpreter::AND(val& left, val& right, idata_row&)
 {
 	auto leftval = left.get<bool>();
 	auto rightval = right.get<bool>();
@@ -634,7 +621,7 @@ val query_interpreter::AND(val& left, val& right, idata_row& dr)
 	return ret;
 }
 
-val query_interpreter::NOT(val& right, idata_row& dr)
+val query_interpreter::NOT(val& right, idata_row&)
 {
 	auto rightval = right.get<bool>();
 
@@ -681,7 +668,7 @@ val query_interpreter::greater_eq(val& left, val& right, idata_row& dr)
 	return val().set<bool>(true);
 }
 
-val query_interpreter::ISNULL(val& left, idata_row& dr)
+val query_interpreter::ISNULL(val& left, idata_row&)
 {
 	if (!left.valid())
 		return val().set<bool>(true);
@@ -689,7 +676,7 @@ val query_interpreter::ISNULL(val& left, idata_row& dr)
 	return val().set<bool>(false);
 }
 
-val query_interpreter::ISNOTNULL(val& left, idata_row& dr)
+val query_interpreter::ISNOTNULL(val& left, idata_row&)
 {
 	if (left.valid())
 		return val().set<bool>(true);
@@ -697,7 +684,7 @@ val query_interpreter::ISNOTNULL(val& left, idata_row& dr)
 	return val().set<bool>(false);
 }
 
-val query_interpreter::add(val& left, val& right, idata_row& dr)
+val query_interpreter::add(val& left, val& right, idata_row&)
 {
 	val retval;
 	if (left.is<double>())
@@ -772,7 +759,7 @@ val query_interpreter::subtract(val& left, val& right, idata_row& dr)
 	}
 }
 
-val query_interpreter::multiply(val& right, val& left, idata_row& dr)
+val query_interpreter::multiply(val& right, val& left, idata_row&)
 {
 	val retval;
 	if (left.is<double>())
@@ -806,7 +793,7 @@ val query_interpreter::multiply(val& right, val& left, idata_row& dr)
 	return retval;
 }
 
-val query_interpreter::divide(val& right, val& left, idata_row& dr)
+val query_interpreter::divide(val& right, val& left, idata_row&)
 {
 	val retval;
 	if (left.is<double>())
@@ -840,7 +827,7 @@ val query_interpreter::divide(val& right, val& left, idata_row& dr)
 	return retval;
 }
 
-val query_interpreter::negate(val& right, idata_row& dr)
+val query_interpreter::negate(val& right, idata_row&)
 {
 	if (right.is<std::int64_t>())
 		return val().set<std::int64_t>(-right.get<std::int64_t>());
@@ -876,7 +863,7 @@ val query_interpreter::IN(val& left, val& right, idata_row& dr)
 	}
 }
 
-val query_interpreter::LIKE(val& left, val& right, idata_row& dr)
+val query_interpreter::LIKE(val& left, val& right, idata_row&)
 {
 	auto rightCpy(right.get<string>());
 //  string not quoted?

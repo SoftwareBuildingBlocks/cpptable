@@ -21,7 +21,7 @@ namespace dt
 			m_selected_row_ids(rows),
 			m_row_idx_idx { d }
 		{
-			if(d < m_selected_row_ids.size())
+			if (d < static_cast<difference_type>(m_selected_row_ids.size()))
 				m_row = t.row(m_selected_row_ids[d]);
 		}
 

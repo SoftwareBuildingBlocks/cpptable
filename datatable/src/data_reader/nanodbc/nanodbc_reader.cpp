@@ -57,8 +57,8 @@ namespace dt
 	{
 		dt::data_table_columns columns;
 		mapper m;
-		for (int i = 0; i < from.columns(); i++) {
-			mapper_type mt = create_mapper_entry(from.column_name(i), from.column_c_datatype(i));
+        for (short i { 0 }; i < from.columns(); i++) {
+			mapper_type mt = create_mapper_entry(from.column_name(i), static_cast<short>(from.column_c_datatype(i)));
 			m.emplace_back(mt);
 			columns.emplace_back(std::get<0>(mt));
 		}

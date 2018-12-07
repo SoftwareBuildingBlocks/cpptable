@@ -22,7 +22,12 @@ namespace dt
 	{
 		virtual void clean(char *data) override
 		{
-			reinterpret_cast<T*>(data)->~T();
+            // note: change the following line to the below to work
+            //       around a compiler warning issue that may be a compiler warning bug
+            //reinterpret_cast<T*>(data)->~T();
+            auto obj { reinterpret_cast<T*>(data) };
+            obj->~T();
+            obj = nullptr;
 		}
 
 		virtual void copy(char *from, char *to) override

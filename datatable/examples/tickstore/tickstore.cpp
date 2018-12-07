@@ -104,11 +104,11 @@ static void load_ticks(const std::string &storeFile, dt::data_table &ticks)
 static int execute_filter(dt::data_table &ticks, const std::string &filter)
 {
 	std::cout << "running filter: " << filter << std::endl;
-	int c = 0;
+	int c { };
 	for (auto itr : ticks.where(filter)) {
 		c++;
 		std::chrono::microseconds us { itr.get<std::uint64_t>(0) };
-		auto timestamp = time_point_us::time_point(us);
+		time_point_us timestamp { us };
 
 		std::cout << to_string(timestamp) << ", "
 					  << itr.get<std::string>(1) << ", "

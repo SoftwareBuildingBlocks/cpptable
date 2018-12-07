@@ -10,6 +10,9 @@ option(BUILD_GTESTS "build gtests" OFF)
 option(BUILD_DOCS "build documentation" OFF)
 option(BUILD_EXAMPLES "build example projects" OFF)
 
+include(CheckIncludeFileCXX)
+include(CheckCXXCompilerFlag)
+
 ###################################
 ## check for compiler support
 ###################################
@@ -17,7 +20,6 @@ MESSAGE("Compiler Id = " ${CMAKE_CXX_COMPILER_ID})
 
 if (CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_COMPILER_IS_GNUCXX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
-	include(CheckCXXCompilerFlag)
 	CHECK_CXX_COMPILER_FLAG("-std=c++1y" COMPILER_SUPPORTS_CXX1y)
 	if(COMPILER_SUPPORTS_CXX1y)
 		message(STATUS "C++ Standard: C++1y")
@@ -69,14 +71,19 @@ endif (BUILD_ALL)
 ## NANODBC READER
 ###################################
 if (BUILD_NANODBC_READER)
+	if (EXISTS $ENV{NANODBC_SRC})
+		message(STATUS "NANODBC source is located at " $ENV{NANODBC_SRC})
+		include_directories($ENV{NANODBC_SRC})
+		check_include_file_cxx($ENV{NANODBC_SRC}/nanodbc.h HAVE_NANODBC_H)
+		if (HAVE_NANODBC_H)
 	message(STATUS "NANODBC Reader: Enabled")
-	include(CheckIncludeFile)
-	check_include_file(nanodbc.h HAVE_NANODBC_H)
-	if (HAVE_NANODBC_H)
 		add_subdirectory(src/data_reader/nanodbc)
 	else (HAVE_NANODBC_H)
-		message(STATUS "NANODBC Reader is Enabled, but it cannot be found and is DISABLED.")
+			message(STATUS "An attempt was made to enable NANODBC, but it cannot be found and is DISABLED.")
 	endif (HAVE_NANODBC_H)
+	else ()
+		message(STATUS "NANODBC Reader: Disabled -- environment variable NANODBC_SRC is not set to the NANODBC path")
+	endif ()
 else (BUILD_NANODBC_READER)
 	message(STATUS "NANODBC Reader: Disabled")
 endif (BUILD_NANODBC_READER)

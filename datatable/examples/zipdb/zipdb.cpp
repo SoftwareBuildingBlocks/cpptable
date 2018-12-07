@@ -3,6 +3,7 @@
 
 
 #include <iostream>
+#include <cstdint>
 #include <sstream>
 
 #include <data_table/data_table.h>

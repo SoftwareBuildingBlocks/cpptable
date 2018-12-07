@@ -44,7 +44,7 @@ bool tokenizer::is_ws(tokenizer_state& curr_state)
 
 char tokenizer::convert_case(char in)
 {
-	return (_case_sensitive ? in : tolower(in));
+	return (_case_sensitive ? in : static_cast<char>(tolower(static_cast<char>(in))));
 }
 
 vector<token> tokenizer::tokenize(istream& input)
@@ -54,10 +54,10 @@ vector<token> tokenizer::tokenize(istream& input)
 	vector<token> tokens;
 	vector<char> tmp_token;
 
-	auto advance = true;
-	char c;
-	auto continue_to_tokenize = true;
-	auto is_eof = false;
+    auto advance { true };
+    char c { };
+    auto continue_to_tokenize { true };
+    auto is_eof { false };
 
 	while(continue_to_tokenize)
 	{

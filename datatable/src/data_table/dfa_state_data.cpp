@@ -923,7 +923,7 @@ void foo(std::vector<tokenizer_state>& in)
 }
 
 template <>
-void foo<64>(std::vector<tokenizer_state>& in)
+void foo<64>(std::vector<tokenizer_state>&)
 {
 }
 
